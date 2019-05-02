@@ -24,6 +24,7 @@
 - Further details
 
 *Deployments of JVM applications*: fetch artefacts (.jar) from Nexus and run.
+If Docker is used to create the artefacts, a separate Docker file is used for that process.
 
 *SSL certificates*: possibly using Let’s Encrypt or by passing an existing key pair, or locally generated self-signed certificates.
 

@@ -44,30 +44,24 @@ If Docker is used to create the artefacts, a separate Docker file is used for th
 ### transmart-database
 
 Purpose:
-Initialise / migrate database schema for Transmart backend
+Database server for Transmart backend
 
 Technology:
 - PostgreSQL server (`FROM postgres:11-alpine`)
 - `pg_bitcount` extension
-- Liquibase
 
 Volumes:
 - standard volume inherited from postgresql
-
-Further details:
-- Database schema creation and schema updates via Liquibase, at startup of the container. As a starting point, liquibase generateChangeLog can be used for creating the changelogs based on an existing database schema.
-
-Adaptations to existing tools:
-- Possibly, changes to transmart-api-server are required to handle a minimal database schema.
 
 
 ### transmart-api-server
 
 Purpose:
-Run the Transmart API server application
+Run the Transmart API server application, initialise / migrate database schema for Transmart
 
 Technology:
 - Java Runtime Environment (FROM openjdk:8-jre-alpine)
+- Liquibase
 
 Depends on:
 - `transmart-database`
@@ -75,11 +69,14 @@ Depends on:
 Configuration:
 - Keycloak parameters
 
+Further details:
+- Database schema creation and schema updates via Liquibase, at startup of the container. As a starting point, liquibase generateChangeLog can be used for creating the changelogs based on an existing database schema.
+
 
 ### gb-backend-database
 
 Purpose:
-Initialise database for Glowing Bear backend
+Database server for Glowing Bear backend
 
 Technology:
 - PostgreSQL server (`FROM postgres:11-alpine`)
@@ -144,7 +141,7 @@ Purpose: store information about export jobs
 Purpose: Run transmart-packer jobs
 
 Technology:
-- Python 3.6 (`FROM python:3.6`)
+- Python 3.6 (`FROM python:3.6-slim`)
 
 Depends on:
 - `redis`
@@ -156,7 +153,7 @@ Purpose:
 Run the transmart-packer web application
 
 Technology:
-- Python 3.6 (`FROM python:3.6`)
+- Python 3.6 (`FROM python:3.6-slim`)
 
 Depends on:
 - `redis`

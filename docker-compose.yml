@@ -6,6 +6,7 @@ services:
     image: 'thehyve/glowing-bear'
     ports:
       - 9080:80
+      - 443:443
     environment:
       TRANSMART_API_SERVER_URL: ${TRANSMART_API_SERVER_URL}
       TRANSMART_PACKER_URL: ${TRANSMART_PACKER_URL}
@@ -13,10 +14,16 @@ services:
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM}
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
+      NGINX_HOST: ${NGINX_HOST}
     depends_on:
       - gb-backend
       - transmart-api-server
       - transmart-packer
+    volumes:
+      - ./nginx/server.crt:/etc/nginx/server.crt
+      - ./nginx/server.key:/etc/nginx/server.key
+    networks:
+      - nginx-proxy-network
 
   # ----- gb-backend + db -----
   gb-backend-database:
@@ -50,6 +57,7 @@ services:
       - transmart-api-server
     networks:
       - gb-backend-db-network
+      - nginx-proxy-network
 
   # ----- transmart-api-server + db -----
   transmart-database:
@@ -81,6 +89,7 @@ services:
       - transmart-database
     networks:
       - transmart-db-network
+      - nginx-proxy-network
 
   # ----- transmart-packer -----
   redis:
@@ -90,9 +99,11 @@ services:
     hostname: redis
     volumes:
       - redis-data:/data
+    networks:
+      - packer-redis-network
   transmart-packer:
     container_name: transmart-packer
-    image: thehyve/transmart-packer
+    image: thehyve/transmart-packer:v0.0.9
     command: ['python', '-m', 'packer']
     ports:
       - 8999:8999
@@ -105,9 +116,12 @@ services:
       KEYCLOAK_URL: ${KEYCLOAK_SERVER_URL}/auth/realms/${KEYCLOAK_REALM}
       CLIENT_ORIGIN_URL: '*'
       CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
+    networks:
+      - nginx-proxy-network
+      - packer-redis-network
   transmart-packer-worker:
     container_name: transmart-packer-worker
-    image: thehyve/transmart-packer
+    image: thehyve/transmart-packer:v0.0.9
     command:  ['celery', '-A', 'packer.tasks', 'worker', '-c', '4', '--loglevel', 'info']
     depends_on:
       - redis
@@ -115,6 +129,8 @@ services:
       - redis
     environment:
       TRANSMART_URL: ${TRANSMART_API_SERVER_URL}
+    networks:
+      - packer-redis-network
 
 volumes:
   db-data:
@@ -124,4 +140,8 @@ networks:
   gb-backend-db-network:
     driver: bridge
   transmart-db-network:
+    driver: bridge
+  nginx-proxy-network:
+    driver: bridge
+  packer-redis-network:
     driver: bridge

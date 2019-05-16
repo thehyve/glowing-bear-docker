@@ -40,8 +40,6 @@ services:
   gb-backend:
     container_name: gb-backend
     image: thehyve/glowing-bear-backend
-    ports:
-      - 9083:8083
     environment:
       TRANSMART_API_SERVER_URL: ${TRANSMART_API_SERVER_URL}
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL}
@@ -76,8 +74,6 @@ services:
   transmart-api-server:
     container_name: transmart-api-server
     image: thehyve/transmart-api-server:17.1-HYVE-5.9-RC3
-    ports:
-      - 9081:8081
     environment:
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL}/auth
       KEYCLOAK_REALM: ${KEYCLOAK_REALM}
@@ -103,25 +99,24 @@ services:
       - packer-redis-network
   transmart-packer:
     container_name: transmart-packer
-    image: thehyve/transmart-packer:v0.0.9
+    image: thehyve/transmart-packer:0.1.3
     command: ['python', '-m', 'packer']
-    ports:
-      - 8999:8999
     depends_on:
       - redis
     links:
       - redis
     environment:
       TRANSMART_URL: ${TRANSMART_API_SERVER_URL}
-      KEYCLOAK_URL: ${KEYCLOAK_SERVER_URL}/auth/realms/${KEYCLOAK_REALM}
+      KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL}
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM}
+      KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
       CLIENT_ORIGIN_URL: '*'
-      CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
     networks:
       - nginx-proxy-network
       - packer-redis-network
   transmart-packer-worker:
     container_name: transmart-packer-worker
-    image: thehyve/transmart-packer:v0.0.9
+    image: thehyve/transmart-packer:0.1.3
     command:  ['celery', '-A', 'packer.tasks', 'worker', '-c', '4', '--loglevel', 'info']
     depends_on:
       - redis

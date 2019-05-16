@@ -3,7 +3,7 @@ services:
   # ----- glowing-bear -----
   glowing-bear:
     container_name: glowing-bear
-    image: 'thehyve/glowing-bear'
+    image: thehyve/glowing-bear:1.3.8
     ports:
       - 9080:80
       - 443:443
@@ -15,13 +15,16 @@ services:
       KEYCLOAK_REALM: ${KEYCLOAK_REALM}
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
       NGINX_HOST: ${NGINX_HOST}
+      NGINX_PORT: ${NGINX_PORT}
     depends_on:
       - gb-backend
       - transmart-api-server
       - transmart-packer
+    #optional volumes for ssl certificates, required if `NGINX_PORT=443 ssl`
     volumes:
       - ./nginx/server.crt:/etc/nginx/server.crt
       - ./nginx/server.key:/etc/nginx/server.key
+      - ./nginx/ssl.conf:/etc/nginx/ssl.conf
     networks:
       - nginx-proxy-network
 

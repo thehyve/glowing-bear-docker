@@ -1,15 +1,28 @@
 # glowing-bear-docker
-Docker scripts for Glowing Bear and its dependencies.
+Docker compose script for Glowing Bear and its dependencies. 
+Currently it supports only ssl connection and requires (self-)signed certificate
+to be present in `./nginx` directory.
 
 ## Run
+1. Rename your server certificate and private key to `server.crt` and `server.key`. 
+Move both files to `./nginx` directory.
 
-Install [docker-compose](https://docs.docker.com/compose/install/) and run
+2. Change the configuration as described below.
+
+3. Install [docker-compose](https://docs.docker.com/compose/install/) and run:
 ```bash
 docker-compose up
 ```
 
-This starts web server serving [Glowing Bear](https://github.com/thehyve/glowing-bear/tree/dev/docker), [TranSMART API server with a database](https://github.com/thehyve/transmart-core/tree/dev/docker), [Gb Backend with a database](https://github.com/thehyve/gb-backend/tree/dev/docker) 
-and [transmart-packer](https://github.com/thehyve/transmart-packer).
+This starts:
+ - web server serving [Glowing Bear](https://github.com/thehyve/glowing-bear/tree/dev/docker), 
+ - [TranSMART API server with a database](https://github.com/thehyve/transmart-core/tree/dev/docker), 
+ - [Gb Backend with a database](https://github.com/thehyve/gb-backend/tree/dev/docker) 
+ - [transmart-packer](https://github.com/thehyve/transmart-packer).
+
+### Configuration 
+
+The default environmental variables are defined  in [`.env`](../.env) file.
 
 Applications use Keycloak for authentication. The following environment variables
 can be used to configure Keycloak:
@@ -20,31 +33,18 @@ Variable              | Default value
 `KEYCLOAK_REALM`      | transmart-dev
 `KEYCLOAK_CLIENT_ID`  | transmart-client
 
-For a current setup urls of TranSMART API server, Gb Backend and transmart-packer should be configured, 
- what cab be done using the following environment variables:
+Glowing Bear and the the APIs of other services can be reached using the following urls:
 
-Variable                   | Default value
+Application                | URL
 ---------------------------|---------------------------
-`TRANSMART_API_SERVER_URL` | http://localhost:9081
-`TRANSMART_PACKER_URL`     | http://localhost:8999
-`GB_BACKEND_URL`           | http://localhost:9083
+Glowing Bear               | `$HOSTNAME`
+TranSMART Api Server       | `$HOSTNAME`/api/transmart-api-server
+TranSMART Packer           | `$HOSTNAME`/api/transmart-packer
+Gb Backend                 | `$HOSTNAME`/api/gb-backend
 
-The default values are defined in the [`.env`](../.env) file.
+Where the `$HOSTNAME` is defined based on `$NGINX_HOST` variable: `https://$NGINX_HOST` (default: `https://localhost`).
 
-### Ports
-
-The following ports will be exposed:
-
-Value    | Type  | Description
----------|-------|-----------------
-9080     | `tcp` | The Glowing Bear UI
-9083     | `tcp` | The Gb Backend
-9081     | `tcp` | The TranSMART API Server
-9432     | `tcp` | PostgreSQL database server for TranSMART
-8999     | `tcp` | transmart-packer
-
-
-The Glowing Bear application is available at http://localhost:9080.
+Additionally TranSMART database will be exposed at port `9432`.
 
 ## :construction: Under development
 

@@ -3,7 +3,7 @@ services:
   # ----- glowing-bear -----
   glowing-bear:
     container_name: glowing-bear
-    image: thehyve/glowing-bear:1.3.8
+    image: thehyve/glowing-bear:2.0.0
     ports:
       - 9080:80
       - 443:443
@@ -42,7 +42,7 @@ services:
       - gb-backend-db-network
   gb-backend:
     container_name: gb-backend
-    image: thehyve/glowing-bear-backend
+    image: thehyve/glowing-bear-backend:1.0.0
     environment:
       TRANSMART_API_SERVER_URL: ${TRANSMART_API_SERVER_URL}
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL}
@@ -76,9 +76,9 @@ services:
       - transmart-db-network
   transmart-api-server:
     container_name: transmart-api-server
-    image: thehyve/transmart-api-server:17.1-HYVE-5.9-RC3
+    image: thehyve/transmart-api-server:17.1-HYVE-5.9
     environment:
-      KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL}/auth
+      KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM}
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
       PGHOST: transmart-database

@@ -27,6 +27,7 @@ services:
       - ./nginx/ssl.conf:/etc/nginx/ssl.conf
     networks:
       - nginx-proxy-network
+    restart: unless-stopped
 
   # ----- gb-backend + db -----
   gb-backend-database:
@@ -40,6 +41,7 @@ services:
       - db-data:/var/lib/postgresql/data
     networks:
       - gb-backend-db-network
+    restart: unless-stopped
   gb-backend:
     container_name: gb-backend
     image: thehyve/glowing-bear-backend:1.0.0
@@ -59,6 +61,7 @@ services:
     networks:
       - gb-backend-db-network
       - nginx-proxy-network
+    restart: unless-stopped
 
   # ----- transmart-api-server + db -----
   transmart-database:
@@ -89,6 +92,7 @@ services:
     networks:
       - transmart-db-network
       - nginx-proxy-network
+    restart: unless-stopped
 
   # ----- transmart-packer -----
   redis:
@@ -100,6 +104,7 @@ services:
       - redis-data:/data
     networks:
       - packer-redis-network
+    restart: unless-stopped
   transmart-packer:
     container_name: transmart-packer
     image: thehyve/transmart-packer:0.1.3
@@ -117,6 +122,7 @@ services:
     networks:
       - nginx-proxy-network
       - packer-redis-network
+    restart: unless-stopped
   transmart-packer-worker:
     container_name: transmart-packer-worker
     image: thehyve/transmart-packer:0.1.3
@@ -129,6 +135,7 @@ services:
       TRANSMART_URL: ${TRANSMART_API_SERVER_URL}
     networks:
       - packer-redis-network
+    restart: unless-stopped
 
 volumes:
   db-data:

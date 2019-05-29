@@ -148,7 +148,8 @@ services:
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
       NGINX_HOST: ${NGINX_HOST}
     volumes:
-      - ./keycloak/realm-export.json:/tmp/realm-export.json
+      - ./keycloak/setup-realm.sh:/opt/jboss/startup-scripts/setup-realm.sh
+      - ./keycloak/realm-template.json:/tmp/realm-template.json
 
 volumes:
   db-data:

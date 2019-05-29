@@ -1,8 +1,8 @@
 {
-  "id": "transmart-dev",
-  "realm": "transmart-dev",
-  "displayName": "transmart-dev",
-  "displayNameHtml": "transmart-dev",
+  "id": "$KEYCLOAK_REALM",
+  "realm": "$KEYCLOAK_REALM",
+  "displayName": "$KEYCLOAK_REALM",
+  "displayNameHtml": "$KEYCLOAK_REALM",
   "notBefore": 0,
   "revokeRefreshToken": false,
   "refreshTokenMaxReuse": 0,
@@ -46,7 +46,7 @@
         "description": "${role_offline-access}",
         "composite": false,
         "clientRole": false,
-        "containerId": "transmart-dev",
+        "containerId": "$KEYCLOAK_REALM",
         "attributes": {}
       },
       {
@@ -55,7 +55,7 @@
         "description": "${role_uma_authorization}",
         "composite": false,
         "clientRole": false,
-        "containerId": "transmart-dev",
+        "containerId": "$KEYCLOAK_REALM",
         "attributes": {}
       }
     ],
@@ -273,26 +273,10 @@
         }
       ],
       "security-admin-console": [],
-      "transmart-client": [
+      "$KEYCLOAK_CLIENT_ID": [
         {
           "id": "83a2ad27-6e86-4aa6-934a-8ffe60cc787e",
           "name": "ROLE_ADMIN",
-          "composite": false,
-          "clientRole": true,
-          "containerId": "5f96e411-4908-49f1-ad5b-81bbcfd991e6",
-          "attributes": {}
-        },
-        {
-          "id": "072fbc26-e633-48ef-a0db-b0420d739d30",
-          "name": "EXP:SCSCP|MEASUREMENTS",
-          "composite": false,
-          "clientRole": true,
-          "containerId": "5f96e411-4908-49f1-ad5b-81bbcfd991e6",
-          "attributes": {}
-        },
-        {
-          "id": "4f89d442-6701-44c7-b589-c82c044837cb",
-          "name": "EXP:SCSCP|COUNTS_WITH_THRESHOLD",
           "composite": false,
           "clientRole": true,
           "containerId": "5f96e411-4908-49f1-ad5b-81bbcfd991e6",
@@ -418,7 +402,7 @@
       "id": "1a6c62f3-d889-4543-a9ad-6af135235fc0",
       "clientId": "account",
       "name": "${client_account}",
-      "baseUrl": "/auth/realms/transmart-dev/account",
+      "baseUrl": "/auth/realms/$KEYCLOAK_REALM/account",
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
@@ -428,7 +412,7 @@
         "view-profile"
       ],
       "redirectUris": [
-        "/auth/realms/transmart-dev/account/*"
+        "/auth/realms/$KEYCLOAK_REALM/account/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -501,13 +485,13 @@
       "id": "1a691e02-4569-4cc9-90e7-a84bc2190f52",
       "clientId": "security-admin-console",
       "name": "${client_security-admin-console}",
-      "baseUrl": "/auth/admin/transmart-dev/console/index.html",
+      "baseUrl": "/auth/admin/$KEYCLOAK_REALM/console/index.html",
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "/auth/admin/transmart-dev/console/*"
+        "/auth/admin/$KEYCLOAK_REALM/console/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -595,16 +579,18 @@
     },
     {
       "id": "5f96e411-4908-49f1-ad5b-81bbcfd991e6",
-      "clientId": "transmart-client",
+      "clientId": "$KEYCLOAK_CLIENT_ID",
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "http://localhost"
+        "http://$NGINX_HOST",
+        "https://$NGINX_HOST"
       ],
       "webOrigins": [
-        "http://localhost"
+        "http://$NGINX_HOST",
+        "https://$NGINX_HOST"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -742,6 +728,7 @@
           "consentRequired": false,
           "config": {
             "multivalued": "true",
+            "userinfo.token.claim": "true",
             "user.attribute": "foo",
             "id.token.claim": "true",
             "access.token.claim": "true",
@@ -1089,11 +1076,11 @@
           "protocolMapper": "oidc-usermodel-realm-role-mapper",
           "consentRequired": false,
           "config": {
-            "multivalued": "true",
             "user.attribute": "foo",
             "access.token.claim": "true",
             "claim.name": "realm_access.roles",
-            "jsonType.label": "String"
+            "jsonType.label": "String",
+            "multivalued": "true"
           }
         },
         {
@@ -1103,11 +1090,11 @@
           "protocolMapper": "oidc-usermodel-client-role-mapper",
           "consentRequired": false,
           "config": {
-            "multivalued": "true",
             "user.attribute": "foo",
             "access.token.claim": "true",
             "claim.name": "resource_access.${client_id}.roles",
-            "jsonType.label": "String"
+            "jsonType.label": "String",
+            "multivalued": "true"
           }
         }
       ]
@@ -1174,14 +1161,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "saml-role-list-mapper",
-            "oidc-usermodel-property-mapper",
+            "saml-user-property-mapper",
             "oidc-full-name-mapper",
             "saml-user-attribute-mapper",
-            "saml-user-property-mapper",
+            "oidc-usermodel-attribute-mapper",
             "oidc-address-mapper",
+            "saml-role-list-mapper",
             "oidc-sha256-pairwise-sub-mapper",
-            "oidc-usermodel-attribute-mapper"
+            "oidc-usermodel-property-mapper"
           ]
         }
       },
@@ -1193,14 +1180,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "oidc-sha256-pairwise-sub-mapper",
             "oidc-usermodel-attribute-mapper",
             "saml-user-property-mapper",
+            "oidc-address-mapper",
+            "saml-role-list-mapper",
+            "oidc-sha256-pairwise-sub-mapper",
             "oidc-usermodel-property-mapper",
             "saml-user-attribute-mapper",
-            "oidc-full-name-mapper",
-            "oidc-address-mapper",
-            "saml-role-list-mapper"
+            "oidc-full-name-mapper"
           ]
         }
       },
@@ -1315,7 +1302,7 @@
   "supportedLocales": [],
   "authenticationFlows": [
     {
-      "id": "41a38d05-7455-42f5-b533-e845474d955d",
+      "id": "133b7b66-0b18-4ea5-b17c-6cea512f748f",
       "alias": "Handle Existing Account",
       "description": "Handle what to do if there is existing account with same email/username like authenticated identity provider",
       "providerId": "basic-flow",
@@ -1346,7 +1333,7 @@
       ]
     },
     {
-      "id": "a7522951-bc0f-43d6-b665-e544ebae9373",
+      "id": "539f183a-a43d-44d9-8e61-b3877d570292",
       "alias": "Verify Existing Account by Re-authentication",
       "description": "Reauthentication of existing account",
       "providerId": "basic-flow",
@@ -1370,7 +1357,7 @@
       ]
     },
     {
-      "id": "349f95ad-8aaf-4daf-84dd-27669241a80c",
+      "id": "54c61c7c-872e-4fd6-b5e3-39cbf9744044",
       "alias": "browser",
       "description": "browser based authentication",
       "providerId": "basic-flow",
@@ -1408,7 +1395,7 @@
       ]
     },
     {
-      "id": "37b90bb0-de55-4538-a3a2-5924ef32fa40",
+      "id": "acbbbb40-0b55-463f-827c-aad47ffe0558",
       "alias": "clients",
       "description": "Base authentication for clients",
       "providerId": "client-flow",
@@ -1446,7 +1433,7 @@
       ]
     },
     {
-      "id": "c6dfecc8-46fb-4771-990b-9e7301cbd9f8",
+      "id": "c4982afc-e9cd-491b-a512-3c67aa1b0f86",
       "alias": "direct grant",
       "description": "OpenID Connect Resource Owner Grant",
       "providerId": "basic-flow",
@@ -1477,7 +1464,7 @@
       ]
     },
     {
-      "id": "cea92dd8-d8f3-4aae-ad07-249e4da37ad6",
+      "id": "9e16b6de-484c-4308-b791-b93ea17f44e7",
       "alias": "docker auth",
       "description": "Used by Docker clients to authenticate against the IDP",
       "providerId": "basic-flow",
@@ -1494,7 +1481,7 @@
       ]
     },
     {
-      "id": "6dd98307-129e-4da2-aae5-b403301daa8c",
+      "id": "68026cb6-fcf9-4fdd-bd20-0a98ac2871ee",
       "alias": "first broker login",
       "description": "Actions taken after first broker login with identity provider account, which is not yet linked to any Keycloak account",
       "providerId": "basic-flow",
@@ -1527,7 +1514,7 @@
       ]
     },
     {
-      "id": "ae792ec4-c63c-4926-a786-c3efd1b70e16",
+      "id": "d6737087-b89f-4e67-af2f-8c56b1595a2e",
       "alias": "forms",
       "description": "Username, password, otp and other auth forms.",
       "providerId": "basic-flow",
@@ -1551,7 +1538,7 @@
       ]
     },
     {
-      "id": "a96d9c6c-a8bc-49fd-9bcd-b0beda2805c2",
+      "id": "1b8d0b41-41d8-474b-9824-c4ed69ef5586",
       "alias": "http challenge",
       "description": "An authentication flow based on challenge-response HTTP Authentication Schemes",
       "providerId": "basic-flow",
@@ -1589,7 +1576,7 @@
       ]
     },
     {
-      "id": "39d6db54-4c90-4644-8008-77afd1abb575",
+      "id": "a87c8b42-1968-4b32-b57f-7235ce43e6e8",
       "alias": "registration",
       "description": "registration flow",
       "providerId": "basic-flow",
@@ -1607,7 +1594,7 @@
       ]
     },
     {
-      "id": "e52233d4-0111-413b-9cf0-e54885192916",
+      "id": "ff811269-b65a-49c7-9c93-d181c8b90efe",
       "alias": "registration form",
       "description": "registration form",
       "providerId": "form-flow",
@@ -1645,7 +1632,7 @@
       ]
     },
     {
-      "id": "9f53a73d-55eb-4002-a27e-f76368c99c36",
+      "id": "a9ff4351-e479-4b38-bab0-dc871b43ee3e",
       "alias": "reset credentials",
       "description": "Reset credentials for a user if they forgot their password or something",
       "providerId": "basic-flow",
@@ -1683,7 +1670,7 @@
       ]
     },
     {
-      "id": "9aaf4db3-a87a-4eb6-8aec-0f5d1526c7b9",
+      "id": "cd0371b2-0903-4b00-8963-71c3ec3102ee",
       "alias": "saml ecp",
       "description": "SAML ECP Profile Authentication Flow",
       "providerId": "basic-flow",
@@ -1702,14 +1689,14 @@
   ],
   "authenticatorConfig": [
     {
-      "id": "8c0ebb4e-e8b2-4873-ae68-574051ecc3bd",
+      "id": "5223256b-de4b-460d-9357-0d4f15e3ebd1",
       "alias": "create unique user config",
       "config": {
         "require.password.update.after.registration": "false"
       }
     },
     {
-      "id": "7fe631a9-0b7b-478f-8725-8a3bfb8599fe",
+      "id": "bc07a8e4-e6e0-45a8-8db7-97541fce303b",
       "alias": "review profile config",
       "config": {
         "update.profile.on.first.login": "missing"
@@ -1775,11 +1762,11 @@
     "_browser_header.strictTransportSecurity": "max-age=31536000; includeSubDomains",
     "permanentLockout": "false",
     "quickLoginCheckMilliSeconds": "1000",
-    "displayName": "transmart-dev",
+    "displayName": "$KEYCLOAK_REALM",
     "_browser_header.xRobotsTag": "none",
     "maxFailureWaitSeconds": "900",
     "minimumQuickLoginWaitSeconds": "60",
-    "displayNameHtml": "transmart-dev",
+    "displayNameHtml": "$KEYCLOAK_REALM",
     "failureFactor": "30",
     "actionTokenGeneratedByUserLifespan": "300",
     "maxDeltaTimeSeconds": "43200",

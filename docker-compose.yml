@@ -20,6 +20,7 @@ services:
       - gb-backend
       - transmart-api-server
       - transmart-packer
+      - keycloak
     #optional volumes for ssl certificates, required if `NGINX_PORT=443 ssl`
     volumes:
       - ./nginx/server.crt:/etc/nginx/server.crt
@@ -56,6 +57,7 @@ services:
     depends_on:
       - gb-backend-database
       - transmart-api-server
+      - keycloak
     networks:
       - gb-backend-db-network
       - nginx-proxy-network
@@ -86,6 +88,7 @@ services:
       PGDATABASE: transmart
     depends_on:
       - transmart-database
+      - keycloak
     networks:
       - transmart-db-network
       - nginx-proxy-network
@@ -106,6 +109,7 @@ services:
     command: ['python', '-m', 'packer']
     depends_on:
       - redis
+      - keycloak
     links:
       - redis
     environment:
@@ -129,6 +133,22 @@ services:
       TRANSMART_URL: ${TRANSMART_API_SERVER_URL}
     networks:
       - packer-redis-network
+
+  # ----- keycloak -----
+  keycloak:
+    container_name: keycloak
+    image: jboss/keycloak:latest
+    ports:
+      - 8080:8080
+    environment:
+      KEYCLOAK_USER: transmart
+      KEYCLOAK_PASSWORD: transmart
+      KEYCLOAK_IMPORT: /tmp/realm-export.json
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM}
+      KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
+      NGINX_HOST: ${NGINX_HOST}
+    volumes:
+      - ./keycloak/realm-export.json:/tmp/realm-export.json
 
 volumes:
   db-data:

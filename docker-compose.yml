@@ -77,6 +77,7 @@ services:
       - transmart-db-data:/var/lib/postgresql/data
     networks:
       - transmart-db-network
+    restart: unless-stopped
   transmart-api-server:
     container_name: transmart-api-server
     image: thehyve/transmart-api-server:17.1-HYVE-5.9

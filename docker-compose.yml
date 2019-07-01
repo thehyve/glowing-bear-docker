@@ -38,7 +38,7 @@ services:
       POSTGRES_PASSWORD: gb
       POSTGRES_DB: gb_backend
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - gb-backend-db-data:/var/lib/postgresql/data
     networks:
       - gb-backend-db-network
     restart: unless-stopped
@@ -109,7 +109,7 @@ services:
   transmart-packer:
     container_name: transmart-packer
     image: thehyve/transmart-packer:0.1.3
-    command: ['python', '-m', 'packer']
+    command: ['transmart-packer']
     depends_on:
       - redis
       - transmart-api-server
@@ -124,6 +124,8 @@ services:
     networks:
       - nginx-proxy-network
       - packer-redis-network
+    volumes:
+      - export-data:/app/tmp_data_dir
     restart: unless-stopped
   transmart-packer-worker:
     container_name: transmart-packer-worker
@@ -139,12 +141,15 @@ services:
     networks:
       - nginx-proxy-network
       - packer-redis-network
+    volumes:
+      - export-data:/app/tmp_data_dir
     restart: unless-stopped
 
 volumes:
-  db-data:
+  gb-backend-db-data:
   transmart-db-data:
   redis-data:
+  export-data:
 networks:
   gb-backend-db-network:
     driver: bridge

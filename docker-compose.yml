@@ -3,7 +3,7 @@ services:
   # ----- glowing-bear -----
   glowing-bear:
     container_name: glowing-bear
-    image: thehyve/glowing-bear:2.0.1
+    image: thehyve/glowing-bear:2.0.2
     ports:
       - 9080:80
       - 443:443

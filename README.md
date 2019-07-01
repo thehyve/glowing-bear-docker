@@ -1,22 +1,6 @@
 # glowing-bear-docker
 Docker compose script for Glowing Bear and its dependencies. 
 
-## Run
-1. Rename your server certificate and private key to `server.crt` and `server.key`. 
-Move both files to `./nginx` directory.
-
-2. Change the configuration as described below.
-
-3. Install [docker-compose](https://docs.docker.com/compose/install/) and run:
-```bash
-docker-compose up
-```
-
-This starts:
- - web server serving [Glowing Bear](https://github.com/thehyve/glowing-bear/tree/dev/docker), 
- - [TranSMART API server with a database](https://github.com/thehyve/transmart-core/tree/dev/docker), 
- - [Gb Backend with a database](https://github.com/thehyve/gb-backend/tree/dev/docker) 
- - [transmart-packer](https://github.com/thehyve/transmart-packer).
 
 ## Configuration
 
@@ -24,14 +8,17 @@ The default environmental variables are defined in [`.env`](../.env) file.
 
 #### Authentication
 
-Applications use Keycloak for authentication. The following environment variables
-can be used to configure Keycloak:
+Applications use Keycloak for authentication, however it is not a part of this script. 
+The assumption is that there is already a Keycloak server running, connection to which can be configured
+ by setting the variables below:
 
-Variable              | Default value
+
+Variable              | Description
 ----------------------|---------------
-`KEYCLOAK_SERVER_URL` | https://keycloak-dwh-test.thehyve.net
-`KEYCLOAK_REALM`      | transmart-dev
-`KEYCLOAK_CLIENT_ID`  | transmart-client
+`KEYCLOAK_SERVER_URL` | url of the Keycloak server e.g. `https://keycloak-dwh-test.thehyve.net`
+`KEYCLOAK_REALM`      | Keycloak realm, e.g. `transmart-dev`
+`KEYCLOAK_CLIENT_ID`  | Keycloak client id, e.g. `transmart-client`
+
 
 Current configuration supports Keycloak version <= `4.5`.
 
@@ -44,6 +31,8 @@ Variable                | Description
 ------------------------|---------------------------
 `NGINX_HOST`            | Name of the server (default: `localhost`)
 `NGINX_PORT`            | `80` if applications should be available via HTTP or <br/>`443 ssl` if applications should be available via HTTPS
+
+###### SSL
 
 To configure SSL, follow the steps below:
 1. Set the `NGINX_PORT` to `443 ssl`.
@@ -66,7 +55,20 @@ To generate a self-signed certificate run, e.g.:
 openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out nginx/server.crt -keyout nginx/server.key -subj "/C=NL/ST=Utrecht/L=Utrecht/O=The Hyve/CN=localhost"
 ```
 
-<br/>
+## Run
+
+Install [docker-compose](https://docs.docker.com/compose/install/) and run:
+```bash
+docker-compose up -d
+```
+
+This starts:
+ - web server serving [Glowing Bear](https://github.com/thehyve/glowing-bear/tree/dev/docker),
+ - [TranSMART API server with a database](https://github.com/thehyve/transmart-core/tree/dev/docker),
+ - [Gb Backend with a database](https://github.com/thehyve/gb-backend/tree/dev/docker)
+ - [transmart-packer](https://github.com/thehyve/transmart-packer).
+
+
 Glowing Bear and the the APIs of other services can be reached using the following urls:
 
 Application                | URL
@@ -80,11 +82,9 @@ Where the `$HOSTNAME` is defined based on `$NGINX_HOST` and `$NGINX_PORT` variab
 
 Additionally TranSMART database will be exposed at port `9432`.
 
-## :construction: Under development
+## Development
 
-This repository is still under development.
-Currently, a [design document](Design.md) is being created.
-The project tasks are managed on the [project board](https://github.com/thehyve/glowing-bear-docker/projects/1).
+The project tasks and [known issues](https://github.com/thehyve/glowing-bear-docker/issues) are managed on the [project board](https://github.com/thehyve/glowing-bear-docker/projects/1).
 
 
 ## License

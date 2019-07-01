@@ -3,14 +3,14 @@ services:
   # ----- glowing-bear -----
   glowing-bear:
     container_name: glowing-bear
-    image: thehyve/glowing-bear:2.0.1
+    image: thehyve/glowing-bear:2.0.2
     ports:
       - 9080:80
       - 443:443
     environment:
-      TRANSMART_API_SERVER_URL: ${TRANSMART_API_SERVER_URL}
-      TRANSMART_PACKER_URL: ${TRANSMART_PACKER_URL}
-      GB_BACKEND_URL: ${GB_BACKEND_URL}
+      TRANSMART_API_SERVER_URL: /api/transmart-api-server
+      TRANSMART_PACKER_URL: /api/transmart-packer
+      GB_BACKEND_URL: /api/gb-backend
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM}
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
@@ -38,7 +38,7 @@ services:
       POSTGRES_PASSWORD: gb
       POSTGRES_DB: gb_backend
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - gb-backend-db-data:/var/lib/postgresql/data
     networks:
       - gb-backend-db-network
     restart: unless-stopped
@@ -46,7 +46,7 @@ services:
     container_name: gb-backend
     image: thehyve/glowing-bear-backend:1.0.0
     environment:
-      TRANSMART_API_SERVER_URL: ${TRANSMART_API_SERVER_URL}
+      TRANSMART_API_SERVER_URL: http://transmart-api-server:8081
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM}
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
@@ -109,13 +109,14 @@ services:
   transmart-packer:
     container_name: transmart-packer
     image: thehyve/transmart-packer:0.1.3
-    command: ['python', '-m', 'packer']
+    command: ['transmart-packer']
     depends_on:
       - redis
+      - transmart-api-server
     links:
       - redis
     environment:
-      TRANSMART_URL: ${TRANSMART_API_SERVER_URL}
+      TRANSMART_URL: http://transmart-api-server:8081
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM}
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
@@ -123,6 +124,8 @@ services:
     networks:
       - nginx-proxy-network
       - packer-redis-network
+    volumes:
+      - export-data:/app/tmp_data_dir
     restart: unless-stopped
   transmart-packer-worker:
     container_name: transmart-packer-worker
@@ -130,18 +133,23 @@ services:
     command:  ['celery', '-A', 'packer.tasks', 'worker', '-c', '4', '--loglevel', 'info']
     depends_on:
       - redis
+      - transmart-api-server
     links:
       - redis
     environment:
-      TRANSMART_URL: ${TRANSMART_API_SERVER_URL}
+      TRANSMART_URL: http://transmart-api-server:8081
     networks:
+      - nginx-proxy-network
       - packer-redis-network
+    volumes:
+      - export-data:/app/tmp_data_dir
     restart: unless-stopped
 
 volumes:
-  db-data:
+  gb-backend-db-data:
   transmart-db-data:
   redis-data:
+  export-data:
 networks:
   gb-backend-db-network:
     driver: bridge

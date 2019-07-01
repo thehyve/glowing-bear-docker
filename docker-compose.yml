@@ -8,9 +8,9 @@ services:
       - 9080:80
       - 443:443
     environment:
-      TRANSMART_API_SERVER_URL: ${TRANSMART_API_SERVER_URL}
-      TRANSMART_PACKER_URL: ${TRANSMART_PACKER_URL}
-      GB_BACKEND_URL: ${GB_BACKEND_URL}
+      TRANSMART_API_SERVER_URL: /api/transmart-api-server
+      TRANSMART_PACKER_URL: /api/transmart-packer
+      GB_BACKEND_URL: /api/gb-backend
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM}
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
@@ -46,7 +46,7 @@ services:
     container_name: gb-backend
     image: thehyve/glowing-bear-backend:1.0.0
     environment:
-      TRANSMART_API_SERVER_URL: ${TRANSMART_API_SERVER_URL}
+      TRANSMART_API_SERVER_URL: http://transmart-api-server:8081
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM}
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
@@ -112,10 +112,11 @@ services:
     command: ['python', '-m', 'packer']
     depends_on:
       - redis
+      - transmart-api-server
     links:
       - redis
     environment:
-      TRANSMART_URL: ${TRANSMART_API_SERVER_URL}
+      TRANSMART_URL: http://transmart-api-server:8081
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM}
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
@@ -130,11 +131,13 @@ services:
     command:  ['celery', '-A', 'packer.tasks', 'worker', '-c', '4', '--loglevel', 'info']
     depends_on:
       - redis
+      - transmart-api-server
     links:
       - redis
     environment:
-      TRANSMART_URL: ${TRANSMART_API_SERVER_URL}
+      TRANSMART_URL: http://transmart-api-server:8081
     networks:
+      - nginx-proxy-network
       - packer-redis-network
     restart: unless-stopped
 

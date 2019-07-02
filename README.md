@@ -1,4 +1,5 @@
 # glowing-bear-docker
+
 Docker compose script for Glowing Bear and its dependencies. 
 
 
@@ -8,17 +9,20 @@ The default environment variables are defined in the [`.env`](.env) file.
 
 ### Authentication
 
-Applications use Keycloak for authentication, however it is not a part of this script. 
+Applications use Keycloak for authentication, however it is not a part of this script.
 The assumption is that there is already a Keycloak server running, connection to which is configured
 by setting the variables below:
 
 Variable              | Description
 :-------------------- |:---------------
-`KEYCLOAK_SERVER_URL` | URL of the Keycloak server e.g. `https://keycloak-dwh-test.thehyve.net`
-`KEYCLOAK_REALM`      | Keycloak realm, e.g. `transmart-dev`
+`KEYCLOAK_SERVER_URL` | URL of the Keycloak server e.g. `https://keycloak.example.com`
+`KEYCLOAK_REALM`      | Keycloak realm, e.g. `transmart`
 `KEYCLOAK_CLIENT_ID`  | Keycloak client id, e.g. `transmart-client`
 
 Current configuration supports Keycloak version <= `4.5`.
+
+It is preferred to set up a Keycloak instance at organisation level, but we provide
+[instructions on how to set up Keycloak](keycloak) on a single machine together with Glowing Bear.
 
 ### Connection
 
@@ -29,30 +33,24 @@ The following variables are required to be specified:
 Variable                | Description
 :---------------------- |:--------------------------
 `NGINX_HOST`            | Name of the server (default: `localhost`)
-`NGINX_PORT`            | `80` if applications should be available via HTTP or <br/>`443 ssl` if applications should be available via HTTPS
+`NGINX_PORT`            | `80` if applications should be available via HTTP or <br/>`443 ssl` if applications should be available via HTTPS (default: `80`)
+
+The file `nginx/ssl.conf` should always exist and can be empty if `NGINX_PORT` is `80`.
 
 #### SSL
 
 To configure SSL, follow the steps below:
 1. Set the `NGINX_PORT` to `443 ssl`.
-2. Add the following volumes:
-    - volume with a signed server certificate: `./nginx/server.crt:/etc/nginx/server.crt`
-    - volume with a private key: `./nginx/server.key:/etc/nginx/server.key`
-    - volume with a ssl configuration: `./nginx/ssl.conf:/etc/nginx/ssl.conf`
-
-The `ssl.conf` file is expected to contain two directives - `ssl_certificate` and `ssl_certificate_key`. 
-For the example above it should be:
-
-```
-ssl_certificate /etc/nginx/server.crt;
-ssl_certificate_key /etc/nginx/server.key;
-```
-
-To generate a self-signed certificate run, e.g.:
-```bash
-openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out nginx/server.crt -keyout nginx/server.key -subj "/C=NL/ST=Utrecht/L=Utrecht/O=The Hyve/CN=localhost"
-```
-
+2. Configure `nginx/ssl.conf` to contain two directives: `ssl_certificate` and `ssl_certificate_key`: 
+    ```nginx
+    ssl_certificate /etc/nginx/server.crt;
+    ssl_certificate_key /etc/nginx/server.key;
+    ```
+3. Copy the certificate and the certificate key to the `nginx` directory.
+    To generate a self-signed certificate run, e.g.:
+    ```bash
+    openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out nginx/server.crt -keyout nginx/server.key -subj "/C=NL/ST=Utrecht/L=Utrecht/O=The Hyve/CN=localhost"
+    ```
 
 ## Run
 
@@ -77,7 +75,7 @@ TranSMART Api Server       | `$HOSTNAME`/api/transmart-api-server
 TranSMART Packer           | `$HOSTNAME`/api/transmart-packer
 Gb Backend                 | `$HOSTNAME`/api/gb-backend
 
-Where the `$HOSTNAME` is defined based on `$NGINX_HOST` and `$NGINX_PORT` variables: (e.g.: `https://localhost`).
+Where the `$HOSTNAME` is defined based on `$NGINX_HOST` and `$NGINX_PORT` variables: (e.g.: `http://localhost`).
 
 Additionally, the TranSMART database server will be exposed at port `9432`.
 

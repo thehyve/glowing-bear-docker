@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  glowingbear-ssl-proxy:
+    image: thehyve/glowingbear-ssl-proxy:0.0.1
+    environment:
+      GLOWINGBEAR_HOSTNAME: ${GLOWINGBEAR_HOSTNAME:?Please configure GLOWINGBEAR_HOSTNAME.}
+      KEYCLOAK_HOSTNAME: ${KEYCLOAK_HOSTNAME}
+    volumes:
+      - ./ssl/server.pem:/etc/nginx/server.pem
+      - ./ssl/server.key:/etc/nginx/server.key
+    ports:
+      - 443:443
+    restart: unless-stopped
+    logging:
+      driver: journald
+      options:
+        labels: application
+        tag: glowingbear-ssl-proxy

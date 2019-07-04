@@ -79,6 +79,8 @@ services:
       options:
         labels: application
         tag: gb-backend
+    volumes:
+      - ./ssl/extra_certs.pem:/home/gb_backend_usr/extra_certs.pem
 
   # ----- transmart-api-server + db -----
   transmart-database:
@@ -122,6 +124,8 @@ services:
       options:
         labels: application
         tag: transmart-api-server
+    volumes:
+      - ./ssl/extra_certs.pem:/home/transmart/extra_certs.pem
 
   # ----- transmart-packer -----
   redis:

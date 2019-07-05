@@ -29,6 +29,13 @@ cat > /etc/nginx/sites-enabled/glowingbear.conf <<EndOfMessage
      }
    }
 EndOfMessage
+cat > /etc/nginx/sites-enabled/fw-glowingbear.conf <<EndOfMessage
+   server {
+     listen 80;
+     server_name ${GLOWINGBEAR_HOSTNAME};
+     return 301 https://${GLOWINGBEAR_HOSTNAME}\$request_uri;
+   }
+EndOfMessage
 fi
 if [[ ! -z ${KEYCLOAK_HOSTNAME} ]]; then
 cat > /etc/nginx/sites-enabled/keycloak.conf <<EndOfMessage
@@ -54,6 +61,13 @@ cat > /etc/nginx/sites-enabled/keycloak.conf <<EndOfMessage
        proxy_set_header      X-Forwarded-Proto https;
        proxy_redirect        off;
      }
+   }
+EndOfMessage
+cat > /etc/nginx/sites-enabled/fw-keycloak.conf <<EndOfMessage
+   server {
+     listen 80;
+     server_name ${KEYCLOAK_HOSTNAME};
+     return 301 https://${KEYCLOAK_HOSTNAME}\$request_uri;
    }
 EndOfMessage
 fi

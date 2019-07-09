@@ -3,6 +3,7 @@ version: '3'
 services:
   keycloak-postgres:
     image: postgres:11-alpine
+    container_name: keycloak-database
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
@@ -20,6 +21,7 @@ services:
 
   keycloak:
     image: jboss/keycloak:4.5.0.Final
+    container_name: keycloak
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: keycloak-postgres

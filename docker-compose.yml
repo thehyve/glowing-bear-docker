@@ -78,7 +78,7 @@ services:
   # ----- transmart-api-server + db -----
   transmart-database:
     container_name: transmart-database
-    image: registry.gitlab.com/thehyve/pg_bitcount:11
+    image: thehyve/pg_bitcount:11
     ports:
       - 9432:5432
     environment:

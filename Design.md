@@ -26,7 +26,8 @@
 *Deployments of JVM applications*: fetch artefacts (.jar) from Nexus and run.
 If Docker is used to create the artefacts, a separate Docker file is used for that process.
 
-*SSL certificates*: possibly using Let’s Encrypt or by passing an existing key pair, or locally generated self-signed certificates.
+*SSL certificates*: possibly using Let’s Encrypt or by passing an existing key pair, or locally generated self-signed certificates
+to a custom proxy service.
 
 *How to organise Dockerfile and docker-compose scripts*:
 - Preferably a Dockerfile per component in its own repository, published to Docker Hub (https://cloud.docker.com/u/thehyve/repository/list; this needs some cleaning up) or Bintray
@@ -43,11 +44,13 @@ If Docker is used to create the artefacts, a separate Docker file is used for th
 
 ### transmart-database
 
+Image: `registry.gitlab.com/thehyve/pg_bitcount:11`
+
 Purpose:
 Database server for Transmart backend
 
 Technology:
-- PostgreSQL server (`FROM postgres:11-alpine`)
+- PostgreSQL server (based on `postgres:11-alpine`)
 - `pg_bitcount` extension
 
 Volumes:
@@ -55,6 +58,8 @@ Volumes:
 
 
 ### transmart-api-server
+
+Image: `thehyve/transmart-api-server`
 
 Purpose:
 Run the Transmart API server application, initialise / migrate database schema for Transmart
@@ -86,6 +91,8 @@ Volumes:
 
 
 ### gb-backend
+
+Image: `thehyve/glowing-bear-backend`
 
 Purpose:
 Run the Glowing Bear backend application (jar)
@@ -138,6 +145,8 @@ Purpose: store information about export jobs
 
 ### transmart-packer-worker
 
+Image: `thehyve/transmart-packer`
+
 Purpose: Run transmart-packer jobs
 
 Technology:
@@ -149,8 +158,9 @@ Depends on:
 
 ### transmart-packer-webapp
 
-Purpose:
-Run the transmart-packer web application
+Image: `thehyve/transmart-packer`
+
+Purpose: Run the transmart-packer web application
 
 Technology:
 - Python 3.6 (`FROM python:3.6-slim`)
@@ -162,7 +172,15 @@ Depends on:
 
 ## Keycloak
 
-jboss/keycloak
+Image: `jboss/keycloak:4.5.0.Final`
+
+
+
+## SSL proxy
+
+Image: `thehyve/glowingbear-ssl-proxy`
+
+Purpose: Provide a SSL proxy for Glowing Bear and (optionally) Keycloak.
 
 
 

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+docker-compose -f docker-compose.yml -f keycloak.yml -f glowingbear-ssl-proxy.yml up -d

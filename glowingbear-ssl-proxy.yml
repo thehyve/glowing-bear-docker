@@ -15,7 +15,7 @@ services:
       - 443:443
     restart: unless-stopped
     logging:
-      driver: journald
+      driver: ${DOCKER_LOGGING_DRIVER:-journald}
       options:
         labels: application
         tag: glowingbear-ssl-proxy

@@ -14,7 +14,7 @@ services:
       - keycloak-db-network
     restart: unless-stopped
     logging:
-      driver: journald
+      driver: ${DOCKER_LOGGING_DRIVER:-journald}
       options:
         labels: application
         tag: keycloak-postgres
@@ -42,7 +42,7 @@ services:
       - keycloak-db-network
     restart: unless-stopped
     logging:
-      driver: journald
+      driver: ${DOCKER_LOGGING_DRIVER:-journald}
       options:
         labels: application
         tag: keycloak

@@ -161,7 +161,7 @@ The services can be stopped with `./stopall`.
 
 ## Logs
 
-Logs are written to `journald`. The logs can be inspected with
+Logs are written to `journald` by default. The logs can be inspected with
 ```bash
 journalctl -f -u docker.service
 ```
@@ -169,6 +169,10 @@ and for individual services with `docker logs <service-name> -f`, e.g.,
 ```bash
 docker logs transmart-api-server -f
 ```
+
+If `journald` is not available (e.g., on MacOS),
+add `DOCKER_LOGGING_DRIVER=json-file` to the `.env` file.
+Logs can then still be inspected with `docker logs`, but not with `journalctl`.
 
 
 ## Development

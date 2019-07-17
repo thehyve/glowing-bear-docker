@@ -25,7 +25,7 @@ services:
       - nginx-proxy-network
     restart: unless-stopped
     logging:
-      driver: journald
+      driver: ${DOCKER_LOGGING_DRIVER:-journald}
       options:
         labels: application
         tag: glowing-bear
@@ -44,7 +44,7 @@ services:
       - gb-backend-db-network
     restart: unless-stopped
     logging:
-      driver: journald
+      driver: ${DOCKER_LOGGING_DRIVER:-journald}
       options:
         labels: application
         tag: gb-backend-database
@@ -70,7 +70,7 @@ services:
       - nginx-proxy-network
     restart: unless-stopped
     logging:
-      driver: journald
+      driver: ${DOCKER_LOGGING_DRIVER:-journald}
       options:
         labels: application
         tag: gb-backend
@@ -93,14 +93,14 @@ services:
       - transmart-db-network
     restart: unless-stopped
     logging:
-      driver: journald
+      driver: ${DOCKER_LOGGING_DRIVER:-journald}
       options:
         labels: application
         tag: transmart-database
 
   transmart-api-server:
     container_name: transmart-api-server
-    image: thehyve/transmart-api-server:17.1-HYVE-6
+    image: thehyve/transmart-api-server:17.1-HYVE-6.1
     environment:
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL:?Please configure KEYCLOAK_SERVER_URL}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM:?Please configure KEYCLOAK_REALM}
@@ -115,7 +115,7 @@ services:
       - nginx-proxy-network
     restart: unless-stopped
     logging:
-      driver: journald
+      driver: ${DOCKER_LOGGING_DRIVER:-journald}
       options:
         labels: application
         tag: transmart-api-server
@@ -134,7 +134,7 @@ services:
       - packer-redis-network
     restart: unless-stopped
     logging:
-      driver: journald
+      driver: ${DOCKER_LOGGING_DRIVER:-journald}
       options:
         labels: application
         tag: redis
@@ -161,7 +161,7 @@ services:
       - export-data:/app/tmp_data_dir
     restart: unless-stopped
     logging:
-      driver: journald
+      driver: ${DOCKER_LOGGING_DRIVER:-journald}
       options:
         labels: application
         tag: transmart-packer
@@ -184,7 +184,7 @@ services:
       - export-data:/app/tmp_data_dir
     restart: unless-stopped
     logging:
-      driver: journald
+      driver: ${DOCKER_LOGGING_DRIVER:-journald}
       options:
         labels: application
         tag: transmart-packer-worker

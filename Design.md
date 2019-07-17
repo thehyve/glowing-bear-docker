@@ -172,7 +172,7 @@ Depends on:
 
 ## Keycloak
 
-Image: `jboss/keycloak`
+Image: `jboss/keycloak:4.5.0.Final`
 
 
 

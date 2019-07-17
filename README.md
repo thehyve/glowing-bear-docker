@@ -134,6 +134,8 @@ Variable               | Description
 Glowing Bear should now be accessible via `https://glowingbear.example.com` and Keycloak via
 `https://keycloak.example.com`.
 
+The services can be stopped with `./stopall`.
+
 
 ## Glowing Bear, Keycloak and the SSL proxy combined
 
@@ -153,7 +155,7 @@ Glowing Bear should now be accessible via `https://glowingbear.example.com` and 
 3. `cp ssl/server.pem ssl/extra_certs.pem` 
 4. Run:
     ```bash
-    docker-compose -f keycloak.yml -f docker-compose.yml -f glowingbear-ssl-proxy.yml up -d
+    ./startall
     ```
 
 

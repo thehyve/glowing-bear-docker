@@ -100,7 +100,7 @@ services:
 
   transmart-api-server:
     container_name: transmart-api-server
-    image: thehyve/transmart-api-server:17.1-HYVE-6.1
+    image: thehyve/transmart-api-server:17.1-HYVE-6.2
     environment:
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL:?Please configure KEYCLOAK_SERVER_URL}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM:?Please configure KEYCLOAK_REALM}

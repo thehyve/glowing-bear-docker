@@ -141,7 +141,7 @@ services:
 
   transmart-packer:
     container_name: transmart-packer
-    image: thehyve/transmart-packer:0.1.3
+    image: thehyve/transmart-packer:0.1.4
     command: ['transmart-packer']
     depends_on:
       - redis
@@ -159,6 +159,7 @@ services:
       - packer-redis-network
     volumes:
       - export-data:/app/tmp_data_dir
+      - ./ssl/extra_certs.pem:/ssl/certs.pem
     restart: unless-stopped
     logging:
       driver: ${DOCKER_LOGGING_DRIVER:-journald}
@@ -168,7 +169,7 @@ services:
 
   transmart-packer-worker:
     container_name: transmart-packer-worker
-    image: thehyve/transmart-packer:0.1.3
+    image: thehyve/transmart-packer:0.1.4
     command:  ['celery', '-A', 'packer.tasks', 'worker', '-c', '4', '--loglevel', 'info']
     depends_on:
       - redis
@@ -182,6 +183,7 @@ services:
       - packer-redis-network
     volumes:
       - export-data:/app/tmp_data_dir
+      - ./ssl/extra_certs.pem:/ssl/certs.pem
     restart: unless-stopped
     logging:
       driver: ${DOCKER_LOGGING_DRIVER:-journald}

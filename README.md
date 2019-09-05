@@ -97,7 +97,16 @@ More information about how to set up Keycloak, see the
 ## Setting up an SSL proxy
 
 To enable SSL, we use Nginx as a proxy.
-Copy the certificate, named `server.pem`, and the certificate key, named `server.key` to the `ssl` directory.
+There can be 2 different types of your certificates:
+
+* Self-signed certificates: you can generate your own certificates for development purposes.
+Be aware that in production your self-signed certificates will not be accepted by the users browser.
+
+* Certificates signed by one of CA (certificate authorities).
+That can be commercial ones or free (like Let's encrypt), or your organisation CA.
+
+### Self-signed certificates
+
 To generate a self-signed certificate for hostname `example.com`
 with aliases `keycloak.example.com` and `glowingbear.example.com`, run, e.g.:
 ```bash
@@ -107,7 +116,51 @@ openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
   -addext "subjectAltName=DNS:keycloak.example.com,DNS:glowingbear.example.com"
 ```
 
-In case of a self-signed certificate, copy the file `ssl/server.pem` to
+### Certificates signed by CA
+
+CA usually provide you with 4 files of following types:
+
+* certificate file for your hostname (eg. `cert.pem`);
+
+* private key file for your hostname (eg. `privkey.pem`);
+
+* chain file (eg. `chain.pem`) - this file contains a certificate chain of CA
+
+```bash
+-----BEGIN CERTIFICATE-----
+  Certificate of Root CA
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+  Certificate of CA(1) signed by Root CA
+-----END CERTIFICATE-----
+...
+-----BEGIN CERTIFICATE-----
+  Certificate of CA(n) signed by CA(n-1)
+-----END CERTIFICATE-----
+```
+
+in the simplest scenario that may contain just 1 certificate;
+
+* full-chain file (eg. `fullchain.pem`) - this file is a concatenation of `cert.pem` and `chain.pem` files;
+
+Sometimes you don't have a full-chain file, but that is not a problem, since it is possible to create one by yourself:
+
+```bash
+cp cert.pem fullchain.pem
+cat chain.pem >> fullchain.pem
+```
+
+From those 4 files this solution requires `cert.pem` and `full-chain.pem` files.
+Copy them to `ssl` directory:
+
+```bash
+cp privkey.pem ssl/server.key
+cp fullchain.pem ssl/server.pem
+```
+
+### Common tasks
+
+You should also copy the file `ssl/server.pem` to
 `ssl/extra_certs.pem` to have the certificate accepted by the services.
 This is for instance needed for the backend services to verify
 an access token with Keycloak. 

@@ -5,7 +5,7 @@ services:
   # ----- glowing-bear -----
   glowing-bear:
     container_name: glowing-bear
-    image: thehyve/glowing-bear:2.0.3
+    image: thehyve/glowing-bear:2.0.4
     ports:
       - 9080:80
     environment:

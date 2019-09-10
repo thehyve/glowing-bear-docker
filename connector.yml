@@ -1,0 +1,24 @@
+---
+version: '3'
+
+services:
+  transmart-variant-store-connector:
+    container_name: transmart-variant-store-connector
+    image: thehyve/transmart-variant-store-connector:0.0.1
+    ports:
+    - 9060:9060
+    environment:
+      KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL:?Please specify a Keycloak url.}
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM:?Please specify a Keycloak realm.}
+      KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID:?Please specify a Keycloak resource.}
+      TRANSMART_API_SERVER_URL: http://transmart-api-server:8081
+      VARIANT_STORE_URL: ${VARIANT_STORE_URL:?Please specify a Variant store url.}
+    restart: unless-stopped
+    logging:
+      driver: ${DOCKER_LOGGING_DRIVER:-journald}
+      options:
+        labels: application
+        tag: variant-store-connector
+    volumes:
+    - ./ssl/extra_certs.pem:/opt/connector/extra_certs.pem
+...

@@ -211,6 +211,23 @@ The services can be stopped with `./stopall`.
     ./startall
     ```
 
+## Running variant store connector
+
+The `startall` script has a flag `--connector` that allows you to run your setup together with variant store connector.
+If you run this script without any flag or with `--no-connector`, your setup will run without variant store connector.
+
+Before running variant store connector be sure that your `.env` file contains all variables declaration as described previously.
+You should also add additional variable to that file, so variant store connector will be able to find variant store instance and transmart server instance:
+```properties
+VARIANT_STORE_URL=https://variant-store.example.com
+```
+
+Be sure that you did all steps required for working with SSL proxy.
+
+After all run:
+```bash
+./startall --connector
+```
 
 ## Logs
 

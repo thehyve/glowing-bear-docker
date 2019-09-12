@@ -1,6 +1,6 @@
 {
-  "id": "transmart",
-  "realm": "transmart",
+  "id": "${KEYCLOAK_REALM}",
+  "realm": "${KEYCLOAK_REALM}",
   "displayName": "Glowing Bear login",
   "displayNameHtml": "",
   "notBefore": 0,
@@ -66,7 +66,7 @@
       "id": "7956f8a1-3377-4027-897a-fd2fd991beee",
       "clientId": "account",
       "name": "${client_account}",
-      "baseUrl": "/auth/realms/transmart/account",
+      "baseUrl": "/auth/realms/${KEYCLOAK_REALM}/account",
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
@@ -76,7 +76,7 @@
         "manage-account"
       ],
       "redirectUris": [
-        "/auth/realms/transmart/account/*"
+        "/auth/realms/${KEYCLOAK_REALM}/account/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -213,13 +213,13 @@
       "id": "b7a96857-6070-4737-a543-87a55f00bdf9",
       "clientId": "security-admin-console",
       "name": "${client_security-admin-console}",
-      "baseUrl": "/auth/admin/transmart/console/index.html",
+      "baseUrl": "/auth/admin/${KEYCLOAK_REALM}/console/index.html",
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "/auth/admin/transmart/console/*"
+        "/auth/admin/${KEYCLOAK_REALM}/console/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -266,14 +266,14 @@
     },
     {
       "id": "8a168049-f7e7-4c32-bfd6-0b5f4c75c1fa",
-      "clientId": "transmart-client",
-      "baseUrl": "https://glowingbear",
+      "clientId": "${KEYCLOAK_CLIENT_ID}",
+      "baseUrl": "https://${GLOWINGBEAR_HOSTNAME}",
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "https://glowingbear/*"
+        "https://${GLOWINGBEAR_HOSTNAME}"
       ],
       "webOrigins": [
         "*"

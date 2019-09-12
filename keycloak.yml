@@ -20,7 +20,7 @@ services:
         tag: keycloak-postgres
 
   keycloak:
-    image: jboss/keycloak:4.5.0.Final
+    image: jboss/keycloak:6.0.1
     container_name: keycloak
     environment:
       DB_VENDOR: POSTGRES
@@ -33,13 +33,20 @@ services:
       KEYCLOAK_HOSTNAME: ${KEYCLOAK_HOSTNAME:?Please configure KEYCLOAK_HOSTNAME.}
       KEYCLOAK_HTTP_PORT: 80
       KEYCLOAK_HTTPS_PORT: 443
+      KEYCLOAK_IMPORT: /tmp/realm-export.json
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM:?Please configure KEYCLOAK_REALM}
+      KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID:?Please configure KEYCLOAK_CLIENT_ID}
       PROXY_ADDRESS_FORWARDING: 'true'
+      GLOWINGBEAR_HOSTNAME: ${GLOWINGBEAR_HOSTNAME:?Please configure GLOWINGBEAR_HOSTNAME.}
     ports:
       - 8080:8080
     depends_on:
       - keycloak-postgres
     networks:
       - keycloak-db-network
+    volumes:
+      - ./keycloak/setup-realm.sh:/opt/jboss/startup-scripts/setup-realm.sh
+      - ./keycloak/realm-template.json:/tmp/realm-template.json
     restart: unless-stopped
     logging:
       driver: ${DOCKER_LOGGING_DRIVER:-journald}

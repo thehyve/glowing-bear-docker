@@ -244,7 +244,7 @@ required:
     127.0.0.1       glowingbear
     ```
 2. Add `extra_hosts` to the `transmart-api-server`, `gb-backend` and `transmart-packer`
-   services in `docker-compose.yml`:
+   services in `docker-compose.yml` (and to `transmart-variant-store-connector` in `connector.yml` if running with `--connector` flag):
     ```yaml
     extra_hosts:
       - "keycloak:172.17.0.1"

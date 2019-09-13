@@ -51,7 +51,7 @@ services:
 
   gb-backend:
     container_name: gb-backend
-    image: thehyve/glowing-bear-backend:1.0.0
+    image: thehyve/glowing-bear-backend:1.0.1
     environment:
       TRANSMART_API_SERVER_URL: http://transmart-api-server:8081
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL:?Please configure KEYCLOAK_SERVER_URL}

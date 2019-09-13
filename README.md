@@ -116,6 +116,8 @@ openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
   -addext "subjectAltName=DNS:keycloak.example.com,DNS:glowingbear.example.com"
 ```
 
+This requires OpenSSL 1.1.1 or newer.
+
 ### Certificates signed by CA
 
 CA usually provide you with 4 files of following types:
@@ -228,6 +230,39 @@ After all run:
 ```bash
 ./startall --connector
 ```
+
+
+## Running the docker-compose scripts locally
+
+If you want to try these scripts locally, without having separate DNS records
+for Glowing Bear and Keycloak pointing to your machine, some additional steps are
+required:
+
+1. Add hostnames to your `etc/hosts` file:
+    ```
+    127.0.0.1       keycloak
+    127.0.0.1       glowingbear
+    ```
+2. Add `extra_hosts` to the `transmart-api-server`, `gb-backend` and `transmart-packer`
+   services in `docker-compose.yml`:
+    ```yaml
+    extra_hosts:
+      - "keycloak:172.17.0.1"
+    ```
+3. Set these local aliases as host names in the `.env` file:
+    ```properties
+    KEYCLOAK_SERVER_URL=https://keycloak
+    GLOWINGBEAR_HOSTNAME=glowingbear
+    KEYCLOAK_HOSTNAME=keycloak
+    ```
+4. Use `localhost`, `keycloak` and `glowingbear` when generating the certificate: 
+    ```bash
+    openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
+      -out ssl/server.pem -keyout ssl/server.key \
+      -subj "/C=NL/ST=Utrecht/L=Utrecht/O=The Hyve/CN=localhost" \
+      -addext "subjectAltName=DNS:keycloak,DNS:glowingbear"
+    ```
+
 
 ## Logs
 

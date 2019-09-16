@@ -14,6 +14,8 @@ services:
       TRANSMART_API_SERVER_URL: http://transmart-api-server:8081
       VARIANT_STORE_URL: ${VARIANT_STORE_URL:?Please specify a Variant store url.}
     restart: unless-stopped
+    depends_on:
+      - transmart-api-server
     logging:
       driver: ${DOCKER_LOGGING_DRIVER:-journald}
       options:
@@ -21,4 +23,7 @@ services:
         tag: variant-store-connector
     volumes:
     - ./ssl/extra_certs.pem:/opt/connector/extra_certs.pem
+    networks:
+      - nginx-proxy-network
 ...
+

@@ -9,7 +9,6 @@ This repository contains `docker-compose` scripts for running:
 - An SSL proxy for Glowing Bear and Keycloak.
 
 The Glowing Bear application and the backend services use Keycloak for authentication.
-Currently, Keycloak version <= `4.5` is supported.
 It is preferred to have a Keycloak instance at organisation level,
 instead of installing it on the same machine as Glowing Bear, but we also provide
 [instructions on how to set up Keycloak](#setting-up-keycloak) on a single machine together with Glowing Bear.

@@ -16,16 +16,14 @@ cat > /etc/nginx/sites-enabled/glowingbear.conf <<EndOfMessage
      index                 index.html;
 
      location / {
-       proxy_pass            http://172.17.0.1:9080;
+       proxy_pass            http://172.17.0.1:9080/;
        proxy_read_timeout    90s;
        proxy_connect_timeout 90s;
        proxy_send_timeout    90s;
-       proxy_set_header      Host \$host;
        proxy_set_header      X-Real-IP \$remote_addr;
        proxy_set_header      X-Forwarded-For \$proxy_add_x_forwarded_for;
        proxy_set_header      Proxy "";
-       proxy_set_header      X-Forwarded-Proto https;
-       proxy_redirect        off;
+       proxy_redirect        default;
      }
    }
 EndOfMessage
@@ -50,16 +48,15 @@ cat > /etc/nginx/sites-enabled/keycloak.conf <<EndOfMessage
      index                 index.html;
 
      location / {
-       proxy_pass            http://172.17.0.1:8080;
+       proxy_pass            http://172.17.0.1:8080/;
        proxy_read_timeout    90s;
        proxy_connect_timeout 90s;
        proxy_send_timeout    90s;
-       proxy_set_header      Host \$host;
        proxy_set_header      X-Real-IP \$remote_addr;
        proxy_set_header      X-Forwarded-For \$proxy_add_x_forwarded_for;
+       proxy_set_header      X-Forwarded-Proto \$scheme;
        proxy_set_header      Proxy "";
-       proxy_set_header      X-Forwarded-Proto https;
-       proxy_redirect        off;
+       proxy_redirect        default;
      }
    }
 EndOfMessage

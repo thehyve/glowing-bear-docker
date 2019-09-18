@@ -5,9 +5,9 @@ services:
   # ----- glowing-bear -----
   glowing-bear:
     container_name: glowing-bear
-    image: thehyve/glowing-bear:2.0.5
+    image: thehyve/glowing-bear:2.0.6
     ports:
-      - 9080:80
+      - 9080:9080
     environment:
       TRANSMART_API_SERVER_URL: /api/transmart-api-server
       TRANSMART_PACKER_URL: /api/transmart-packer
@@ -17,7 +17,7 @@ services:
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID:?Please configure KEYCLOAK_CLIENT_ID}
       DENY_ACCESS_WITHOUT_ROLE: ${DENY_ACCESS_WITHOUT_ROLE:-false}
       NGINX_HOST: localhost
-      NGINX_PORT: 80
+      NGINX_PORT: 9080
       CHECK_SERVER_STATUS: 'true'
     depends_on:
       - gb-backend

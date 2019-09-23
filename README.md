@@ -22,11 +22,12 @@ follow the instructions to [install docker-compose](https://docs.docker.com/comp
 
 The environment variables for the docker-compose script are defined in the `.env` file:
 
-Variable              | Description
-:-------------------- |:---------------
-`KEYCLOAK_SERVER_URL` | URL of the Keycloak server e.g. `https://keycloak.example.com`
-`KEYCLOAK_REALM`      | Keycloak realm, e.g. `transmart`
-`KEYCLOAK_CLIENT_ID`  | Keycloak client id, e.g. `transmart-client`
+Variable                   | Description
+:------------------------- |:---------------
+`KEYCLOAK_SERVER_URL`      | URL of the Keycloak server e.g. `https://keycloak.example.com`
+`KEYCLOAK_REALM`           | Keycloak realm, e.g. `transmart`
+`KEYCLOAK_CLIENT_ID`       | Keycloak client id, e.g. `transmart-client`
+`DENY_ACCESS_WITHOUT_ROLE` | Only allow access to users with a role (default: `false`).
 
 1. Create a `.env` file:
     ```properties

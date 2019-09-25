@@ -7,7 +7,7 @@ services:
     container_name: glowing-bear
     image: thehyve/glowing-bear:2.0.6
     ports:
-      - 9080:9080
+      - ${GLOWING_BEAR_PORT:-9080}:9080
     environment:
       TRANSMART_API_SERVER_URL: /api/transmart-api-server
       TRANSMART_PACKER_URL: /api/transmart-packer
@@ -84,7 +84,7 @@ services:
     container_name: transmart-database
     image: thehyve/pg_bitcount:11
     ports:
-      - 9432:5432
+      - ${TRANSMART_DATABASE_PORT:-9432}:5432
     environment:
       POSTGRES_USER: biomart_user
       POSTGRES_PASSWORD: biomart_user

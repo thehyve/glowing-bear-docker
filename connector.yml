@@ -6,7 +6,7 @@ services:
     container_name: transmart-variant-store-connector
     image: thehyve/transmart-variant-store-connector:0.0.1
     ports:
-    - 9060:9060
+    - ${TRANSMART_VARIANT_STORE_CONNECTOR_PORT:-9060}:9060
     environment:
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL:?Please specify a Keycloak url.}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM:?Please specify a Keycloak realm.}

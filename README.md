@@ -264,6 +264,20 @@ required:
     ```
 
 
+## Running multiple instances on a single host
+
+In order to run multiple instances, different ports need to be configured for
+Glowing Bear, the TranSMART database and, optionally Keycloak and the variant store connector.
+
+An example of such configuration in the `.env` file:
+```properties
+GLOWING_BEAR_PORT=9080
+TRANSMART_DATABASE_PORT=9432
+KEYCLOAK_PORT=8080
+TRANSMART_VARIANT_STORE_CONNECTOR_PORT=9060
+```
+
+
 ## Logs
 
 Logs are written to `journald` by default. The logs can be inspected with

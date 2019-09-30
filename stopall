@@ -19,12 +19,13 @@ begins_with_short_option()
 
 # THE DEFAULTS INITIALIZATION - OPTIONALS
 _arg_connector="off"
+_arg_notebook_server="off"
 
 
 print_help()
 {
 	printf '%s\n' "Stop all Glowing Bear and TranSMART components using docker-compose."
-	printf 'Usage: %s [--(no-)connector] [-h|--help]\n' "$0"
+	printf 'Usage: %s [--(no-)connector] [--(no-)notebook_server] [-h|--help]\n' "$0"
 	printf '\t%s\n' "-h, --help: Prints help"
 }
 
@@ -38,6 +39,10 @@ parse_commandline()
 			--no-connector|--connector)
 				_arg_connector="on"
 				test "${1:0:5}" = "--no-" && _arg_connector="off"
+				;;
+			--no-notebook-server|--notebook-server)
+				_arg_notebook_server="on"
+				test "${1:0:5}" = "--no-" && _arg_notebook_server="off"
 				;;
 			-h|--help)
 				print_help
@@ -57,4 +62,7 @@ parse_commandline()
 
 parse_commandline "$@"
 
-docker-compose -f docker-compose.yml -f keycloak.yml -f glowingbear-ssl-proxy.yml $([[ $_arg_connector = "on" ]] && echo '-f connector.yml') down
+docker-compose -f docker-compose.yml -f keycloak.yml -f glowingbear-ssl-proxy.yml \
+  $([[ $_arg_connector = "on" ]] && echo '-f connector.yml') \
+  $([[ $_arg_notebook_server = "on" ]] && echo '-f tmtk-notebook-server.yml') \
+  down

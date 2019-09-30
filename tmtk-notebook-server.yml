@@ -1,0 +1,25 @@
+---
+version: '3'
+
+services:
+  tmtk-notebook-server:
+    container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-tmtk-notebook-server
+    image: tmtk-notebook-server
+    build: ./docker/tmtk-notebook-server
+    ports:
+    - ${TMTK_NOTEBOOK_PORT:-8888}:8888
+    environment:
+      TMTK_NOTEBOOK_PASSWORD: ${TMTK_NOTEBOOK_PASSWORD:?Please configure TMTK_NOTEBOOK_PASSWORD}
+    restart: unless-stopped
+    logging:
+      driver: ${DOCKER_LOGGING_DRIVER:-journald}
+      options:
+        labels: application
+        tag: tmtk-notebook-server
+    networks:
+      - transmart-db-network
+    volumes:
+      - tmtk-notebook-server-data:/home/jupyter
+
+volumes:
+  tmtk-notebook-server-data:

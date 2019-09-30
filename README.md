@@ -235,6 +235,26 @@ After all run:
 ./startall --connector
 ```
 
+## Running a Jupyter notebook server
+
+The `startall` script has a flag `--notebook-server` that allows you to run your setup together with a
+[Jupyter](https://jupyter.org) note book server with the [tmtk]((https://pypi.org/project/tmtk/)) and [transmart](https://pypi.org/project/transmart/)
+packages and `transmart-copy` pre-installed.
+If you run this script without any flag or with `--no-notebook-server`, your setup will run without notebook server.
+
+Before running the notebook server be sure that your `.env` file contains all variables declaration as described previously.
+You should also add an additional variable to that file, to configure the password of the server:
+```properties
+TMTK_NOTEBOOK_PASSWORD=Choose a secure password
+```
+
+Be sure that you did all steps required for working with SSL proxy.
+
+After all run:
+```bash
+./startall --notebook-server
+```
+
 
 ## Running the docker-compose scripts locally
 

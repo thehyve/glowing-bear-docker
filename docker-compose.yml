@@ -4,7 +4,7 @@ services:
 
   # ----- glowing-bear -----
   glowing-bear:
-    container_name: glowing-bear
+    container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-glowing-bear
     image: thehyve/glowing-bear:2.0.6
     ports:
       - ${GLOWING_BEAR_PORT:-9080}:9080
@@ -34,7 +34,7 @@ services:
 
   # ----- gb-backend + db -----
   gb-backend-database:
-    container_name: gb-backend-database
+    container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-gb-backend-database
     image: postgres:11-alpine
     environment:
       POSTGRES_USER: gb
@@ -52,7 +52,7 @@ services:
         tag: gb-backend-database
 
   gb-backend:
-    container_name: gb-backend
+    container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-gb-backend
     image: thehyve/glowing-bear-backend:1.0.2
     environment:
       TRANSMART_API_SERVER_URL: http://transmart-api-server:8081
@@ -81,7 +81,7 @@ services:
 
   # ----- transmart-api-server + db -----
   transmart-database:
-    container_name: transmart-database
+    container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-transmart-database
     image: thehyve/pg_bitcount:11
     ports:
       - ${TRANSMART_DATABASE_PORT:-9432}:5432
@@ -101,7 +101,7 @@ services:
         tag: transmart-database
 
   transmart-api-server:
-    container_name: transmart-api-server
+    container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-transmart-api-server
     image: thehyve/transmart-api-server:17.2.4
     environment:
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL:?Please configure KEYCLOAK_SERVER_URL}
@@ -127,7 +127,7 @@ services:
 
   # ----- transmart-packer -----
   redis:
-    container_name: transmart-packer-redis
+    container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-transmart-packer-redis
     image: redis:alpine
     command: ["redis-server", "--appendonly", "yes"]
     hostname: redis
@@ -143,7 +143,7 @@ services:
         tag: redis
 
   transmart-packer:
-    container_name: transmart-packer
+    container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-transmart-packer
     image: thehyve/transmart-packer:0.2.1
     command: ['transmart-packer']
     depends_on:
@@ -171,7 +171,7 @@ services:
         tag: transmart-packer
 
   transmart-packer-worker:
-    container_name: transmart-packer-worker
+    container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-transmart-packer-worker
     image: thehyve/transmart-packer:0.2.1
     command:  ['celery', '-A', 'packer.tasks', 'worker', '-c', '4', '--loglevel', 'info']
     depends_on:

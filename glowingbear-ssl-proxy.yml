@@ -3,7 +3,7 @@ version: '3'
 services:
   glowingbear-ssl-proxy:
     image: thehyve/glowingbear-ssl-proxy:0.0.1
-    container_name: glowingbear-ssl-proxy
+    container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-glowingbear-ssl-proxy
     environment:
       GLOWINGBEAR_HOSTNAME: ${GLOWINGBEAR_HOSTNAME:?Please configure GLOWINGBEAR_HOSTNAME.}
       KEYCLOAK_HOSTNAME: ${KEYCLOAK_HOSTNAME}

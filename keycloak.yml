@@ -3,7 +3,7 @@ version: '3'
 services:
   keycloak-postgres:
     image: postgres:11-alpine
-    container_name: keycloak-database
+    container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-keycloak-database
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
@@ -21,7 +21,7 @@ services:
 
   keycloak:
     image: jboss/keycloak:6.0.1
-    container_name: keycloak
+    container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-keycloak
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: keycloak-postgres

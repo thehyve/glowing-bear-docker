@@ -12,5 +12,5 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build the Docker image
       run: |
-      cd ./docker/glowingbear-ssl-proxy
-      docker build .
+      cd docker/glowingbear-ssl-proxy
+      docker build -f Dockerfile

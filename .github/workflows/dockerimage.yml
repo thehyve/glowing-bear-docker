@@ -20,4 +20,6 @@ jobs:
     - name: Publish the Docker image
       run: |
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker push "thehyve/glowingbear-ssl-proxy:`cat version.txt`"
+        docker manifest inspect thehyve/glowingbear-ssl-proxy:0.0.1
+      if: failure()
+      run: docker push "thehyve/glowingbear-ssl-proxy:`cat version.txt`"

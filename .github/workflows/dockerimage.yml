@@ -17,9 +17,10 @@ jobs:
       run: |
         cd docker/glowingbear-ssl-proxy
         docker build -t "thehyve/glowingbear-ssl-proxy:`cat version.txt`" . --no-cache
-    - name: Publish the Docker image
+    - name: Verify tag
       run: |
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         docker manifest inspect thehyve/glowingbear-ssl-proxy:0.0.1
+    - name: Publish Docker image
       if: failure()
       run: docker push "thehyve/glowingbear-ssl-proxy:`cat version.txt`"

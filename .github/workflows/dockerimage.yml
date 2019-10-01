@@ -13,4 +13,4 @@ jobs:
     - name: Build the Docker image
       run: |
         cd docker/glowingbear-ssl-proxy
-        docker build -f Dockerfile
+        docker build .

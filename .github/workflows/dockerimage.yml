@@ -16,7 +16,7 @@ jobs:
       run: |
         cd docker/glowingbear-ssl-proxy
         docker build -t "thehyve/glowingbear-ssl-proxy:${VERSION}" . --no-cache
-      if sucess():
+    - name: Publish the Docker image
       run: |
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         docker push "thehyve/glowingbear-ssl-proxy:${VERSION}"

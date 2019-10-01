@@ -23,4 +23,5 @@ jobs:
         docker manifest inspect thehyve/glowingbear-ssl-proxy:0.0.1
     - name: Publish Docker image
       if: failure()
-      run: docker push "thehyve/glowingbear-ssl-proxy:`cat version.txt`"
+      run: |
+        docker push "thehyve/glowingbear-ssl-proxy:`cat version.txt`"

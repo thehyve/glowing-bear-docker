@@ -17,16 +17,13 @@ jobs:
       run: |
         cd docker/glowingbear-ssl-proxy
         docker build -t "thehyve/glowingbear-ssl-proxy:`cat version.txt`" . --no-cache
-    - name: Verify tag
+    - name: Publish Docker image
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
       run: |
         cd docker/glowingbear-ssl-proxy
         echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
         docker manifest inspect "thehyve/glowingbear-ssl-proxy:`cat version.txt`"
-    - name: Publish Docker image
-      if: failure()
-      run: |
-        cd docker/glowingbear-ssl-proxy
-        echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-        docker push "thehyve/glowingbear-ssl-proxy:`cat version.txt`"
+        exit_status=$?
+        if [ $exit_status -eq 1 ] then docker push "thehyve/glowingbear-ssl-proxy:`cat version.txt`" else return 0 fi
+        

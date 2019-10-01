@@ -23,7 +23,7 @@ jobs:
       run: |
         cd docker/glowingbear-ssl-proxy
         echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-        docker manifest inspect "thehyve/glowingbear-ssl-proxy:`cat version.txt`"
+        docker manifest inspect "thehyve/glowingbear-ssl-proxy:`cat version.txt`" > /dev/null
         exit_status=$?
         if [ $exit_status -eq 1 ]; then docker push "thehyve/glowingbear-ssl-proxy:`cat version.txt`"; else echo "Tag `cat version.txt` already exists."; fi
         

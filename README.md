@@ -24,6 +24,7 @@ The environment variables for the docker-compose script are defined in the `.env
 
 Variable                   | Description
 :------------------------- |:---------------
+`INSTANCE_ID`              | A unique instance identifier, e.g., `DWH1`
 `KEYCLOAK_SERVER_URL`      | URL of the Keycloak server e.g. `https://keycloak.example.com`
 `KEYCLOAK_REALM`           | Keycloak realm, e.g. `transmart`
 `KEYCLOAK_CLIENT_ID`       | Keycloak client id, e.g. `transmart-client`
@@ -31,6 +32,7 @@ Variable                   | Description
 
 1. Create a `.env` file:
     ```properties
+    INSTANCE_ID=DWH1
     KEYCLOAK_SERVER_URL=https://keycloak.example.com
     KEYCLOAK_REALM=transmart
     KEYCLOAK_CLIENT_ID=transmart-client
@@ -196,6 +198,8 @@ The services can be stopped with `./stopall`.
 
 1. Prepare a single `.env` file:
     ```properties
+    INSTANCE_ID=DWH1
+
     KEYCLOAK_SERVER_URL=https://keycloak.example.com
     KEYCLOAK_REALM=transmart
     KEYCLOAK_CLIENT_ID=transmart-client
@@ -266,15 +270,25 @@ required:
 
 ## Running multiple instances on a single host
 
-In order to run multiple instances, different ports need to be configured for
+In order to run multiple instances, a unique instance id and different ports need to be configured for
 Glowing Bear, the TranSMART database and, optionally Keycloak and the variant store connector.
+Since the SSL proxy always listens on port 443 (the default https port),
+running multiple SSL proxies is not supported.
+Please set up your own SSL proxy for multiple instances instead. 
+Create a directory per instance with a `.env` file containing the configuration for that instance.
 
-An example of such configuration in the `.env` file:
+An example of such configuration in the `/var/data-warehouses/dhw2/.env` file:
 ```properties
+INSTANCE_ID=DWH2
 GLOWING_BEAR_PORT=9080
 TRANSMART_DATABASE_PORT=9432
 KEYCLOAK_PORT=8080
 TRANSMART_VARIANT_STORE_CONNECTOR_PORT=9060
+```
+
+Start the instance `DWH2`:
+```bash
+docker-compose -f docker-compose.yml --project-directory /var/data-warehouses/dwh2 up
 ```
 
 

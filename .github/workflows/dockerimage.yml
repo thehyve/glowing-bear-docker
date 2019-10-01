@@ -19,7 +19,7 @@ jobs:
         docker build -t "thehyve/glowingbear-ssl-proxy:`cat version.txt`" . --no-cache
     - name: Verify tag
       env:
-        DOCKER_CLI_EXPERIMENTA: enabled
+        DOCKER_CLI_EXPERIMENTAL: enabled
       run: |
         cd docker/glowingbear-ssl-proxy
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}

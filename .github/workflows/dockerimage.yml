@@ -11,11 +11,9 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build the Docker image
-      env:
-        VERSION: 0.0.1
       run: |
         cd docker/glowingbear-ssl-proxy
-        docker build -t "thehyve/glowingbear-ssl-proxy:${VERSION}" . --no-cache
+        docker build -t "thehyve/glowingbear-ssl-proxy:`cat version.txt`" . --no-cache
     - name: Publish the Docker image
       run: |
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}

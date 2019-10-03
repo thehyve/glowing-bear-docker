@@ -4,7 +4,7 @@ version: '3'
 services:
   transmart-variant-store-connector:
     container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-transmart-variant-store-connector
-    image: thehyve/transmart-variant-store-connector:0.0.1
+    image: thehyve/transmart-variant-store-connector:0.0.2
     ports:
     - ${TRANSMART_VARIANT_STORE_CONNECTOR_PORT:-9060}:9060
     environment:

@@ -1,0 +1,27 @@
+---
+version: '3'
+
+services:
+  letsencrypt:
+    container_name: letsencrypt
+    image: linuxserver/letsencrypt
+    ports:
+      - 443:443
+      - 80:80
+    cap_add:
+      - NET_ADMIN
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/London
+      URL: ${LETS_ENCRYPT_DOMAIN:?Please configure LETS_ENCRYPT_DOMAIN.}
+      SUBDOMAINS: ${LETS_ENCRYPT_SUBDOMAINS:?Please configure LETS_ENCRYPT_SUBDOMAINS.}
+      VALIDATION: http
+    restart: unless-stopped
+    logging:
+      driver: ${DOCKER_LOGGING_DRIVER:-journald}
+      options:
+        labels: application
+        tag: letsencrypt
+    volumes:
+      - ./letsencrypt:/config

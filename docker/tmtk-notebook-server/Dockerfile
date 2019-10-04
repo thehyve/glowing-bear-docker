@@ -25,6 +25,7 @@ RUN mkdir -p /usr/share/man/man1 &&\
 RUN	curl -L -o "${TRANSMART_COPY_JAR_FILE}" "${TRANSMART_COPY_JAR_URL}"
 
 RUN pip install --no-cache-dir --upgrade jupyter &&\
+    pip install --no-cache-dir --upgrade "pandas == 0.23.4" &&\
     pip install --no-cache-dir --upgrade "transmart[full] == ${TRANSMART_API_CLIENT_PY_VERSION}" &&\
     pip install --no-cache-dir --upgrade tqdm &&\
     pip install --no-cache-dir --upgrade "tmtk == ${TMTK_VERSION}" &&\

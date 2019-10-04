@@ -5,7 +5,7 @@ services:
   # ----- glowing-bear -----
   glowing-bear:
     container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-glowing-bear
-    image: thehyve/glowing-bear:2.0.6
+    image: thehyve/glowing-bear:2.0.7
     ports:
       - ${GLOWING_BEAR_PORT:-9080}:9080
     environment:

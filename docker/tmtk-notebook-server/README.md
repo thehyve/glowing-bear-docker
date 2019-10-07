@@ -16,5 +16,5 @@ packages and `transmart-copy` installed.
 
 ```bash
 # Build image
-docker build "thehyve/tmtk-notebook-server" . --no-cache
+docker build -t "thehyve/tmtk-notebook-server" . --no-cache
 ```

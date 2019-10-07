@@ -4,8 +4,7 @@ version: '3'
 services:
   tmtk-notebook-server:
     container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-tmtk-notebook-server
-    image: tmtk-notebook-server
-    build: ./docker/tmtk-notebook-server
+    image: thehyve/tmtk-notebook-server
     ports:
     - ${TMTK_NOTEBOOK_PORT:-8888}:8888
     environment:

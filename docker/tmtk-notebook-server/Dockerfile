@@ -15,7 +15,7 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 # Install OpenJDK 8
 RUN mkdir -p /usr/share/man/man1 &&\
-    apt-get update && apt-get install -y --no-install-recommends curl software-properties-common gnupg &&\
+    apt-get update && apt-get install -y --no-install-recommends curl software-properties-common gnupg unzip &&\
 	curl https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add - &&\
     add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/ &&\
     apt-get update && apt-get install -y --no-install-recommends adoptopenjdk-8-hotspot-jre &&\

@@ -29,6 +29,8 @@ RUN pip install --no-cache-dir --upgrade jupyter &&\
     pip install --no-cache-dir --upgrade "transmart[full] == ${TRANSMART_API_CLIENT_PY_VERSION}" &&\
     pip install --no-cache-dir --upgrade tqdm &&\
     pip install --no-cache-dir --upgrade "tmtk == ${TMTK_VERSION}" &&\
+    pip install --no-cache-dir --upgrade bokeh &&\
+    pip install --no-cache-dir --upgrade transmart-loader &&\
     jupyter-nbextension install --py tmtk.arborist &&\
     jupyter-serverextension enable tmtk.arborist &&\
     groupadd -r jupyter && useradd -r -g jupyter jupyter &&\

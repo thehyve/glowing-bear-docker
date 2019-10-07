@@ -25,7 +25,7 @@ _arg_notebook_server="off"
 print_help()
 {
 	printf '%s\n' "Stop all Glowing Bear and TranSMART components using docker-compose."
-	printf 'Usage: %s [--(no-)connector] [--(no-)notebook_server] [-h|--help]\n' "$0"
+	printf 'Usage: %s [--(no-)connector] [--(no-)notebook-server] [-h|--help]\n' "$0"
 	printf '\t%s\n' "-h, --help: Prints help"
 }
 

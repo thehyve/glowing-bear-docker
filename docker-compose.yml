@@ -5,7 +5,7 @@ services:
   # ----- glowing-bear -----
   glowing-bear:
     container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-glowing-bear
-    image: thehyve/glowing-bear:2.0.7
+    image: thehyve/glowing-bear:2.0.8
     ports:
       - ${GLOWING_BEAR_PORT:-9080}:9080
     environment:
@@ -102,7 +102,7 @@ services:
 
   transmart-api-server:
     container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-transmart-api-server
-    image: thehyve/transmart-api-server:17.2.4
+    image: thehyve/transmart-api-server:17.2.5
     environment:
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL:?Please configure KEYCLOAK_SERVER_URL}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM:?Please configure KEYCLOAK_REALM}

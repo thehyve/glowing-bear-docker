@@ -144,7 +144,7 @@ services:
 
   transmart-packer:
     container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-transmart-packer
-    image: thehyve/transmart-packer:0.2.1
+    image: thehyve/transmart-packer:0.3.0
     command: ['transmart-packer']
     depends_on:
       - redis
@@ -172,7 +172,7 @@ services:
 
   transmart-packer-worker:
     container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-transmart-packer-worker
-    image: thehyve/transmart-packer:0.2.1
+    image: thehyve/transmart-packer:0.3.0
     command:  ['celery', '-A', 'packer.tasks', 'worker', '-c', '4', '--loglevel', 'info']
     depends_on:
       - redis

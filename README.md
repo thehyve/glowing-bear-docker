@@ -111,6 +111,59 @@ Be aware that in production your self-signed certificates will not be accepted b
 * Certificates signed by one of CA (certificate authorities).
 That can be commercial ones or free (like Let's encrypt), or your organisation CA.
 
+### Let's Encrypt certificates
+
+To set up an SSL proxy using the Let's Encrypt service to obtain certificates automatically,
+follow the instructions in this section and skip the next sections.
+This is the preferred method for publicly reachable installations.
+For installing custom certificates, see the next sections.
+
+Example:
+```
+SSL_PROXY_HOSTNAMES=glowingbear.example.com:9080,keycloak.example.com:8080
+LOCAL_DOCKER_IP=172.17.0.1
+```
+Start Nginx and the Let's Encrypt service with 
+```bash
+docker-compose -f letsencrypt.yml up -d
+```
+
+The `SSL_PROXY_HOSTNAMES` variable is used to specify host names and the ports that
+the proxy forwards to. Specify a comma-separated list with per host the
+FQDN and the port separated by a colon: `hostname:port`.
+
+1. Prepare the `.env` file:
+    ```properties
+    LETS_ENCRYPT_DOMAIN=example.com
+    SUBDOMAINS=glowingbear,keycloak
+
+    SSL_PROXY_HOSTNAMES=glowingbear.example.com:9080,keycloak.example.com:8080
+    LOCAL_DOCKER_IP=172.17.0.1
+    ```
+2. Run:
+    ```bash
+    mkdir letsencrypt
+    docker-compose -f letsencrypt.yml up -d
+    ```
+    Check if the certificates were successfully generated with
+    ```bash
+    docker logs letsencrypt -f
+    ```
+3. Configure the nginx proxy:
+    ```bash
+    # Read the environment variables
+    source .env
+    # Generate the nginx config files
+    ./configure-letsencrypt.sh
+    # Restart nginx
+    docker restart letsencrypt
+    ```
+
+Glowing Bear should now be accessible via `https://glowingbear.example.com` and Keycloak via
+`https://keycloak.example.com`.
+
+The services can be stopped with `./stopall --letsencrypt`.
+
 ### Self-signed certificates
 
 To generate a self-signed certificate for hostname `example.com`
@@ -166,7 +219,7 @@ cp privkey.pem ssl/server.key
 cp fullchain.pem ssl/server.pem
 ```
 
-### Common tasks
+### Common tasks for custom certificates
 
 You should also copy the file `ssl/server.pem` to
 `ssl/extra_certs.pem` to have the certificate accepted by the services.
@@ -218,6 +271,11 @@ The services can be stopped with `./stopall`.
     ./startall
     ```
 
+To use Let's Encrypt instead of custom certificates, configure the 
+`LETS_ENCRYPT_DOMAIN` and `SUBDOMAINS` variables in step 1) and 
+run `./startall --letsencrypt` in step 4).
+
+
 ## Running variant store connector
 
 The `startall` script has a flag `--connector` that allows you to run your setup together with variant store connector.
@@ -239,7 +297,7 @@ After all run:
 ## Running a Jupyter notebook server
 
 The `startall` script has a flag `--notebook-server` that allows you to run your setup together with a
-[Jupyter](https://jupyter.org) note book server with the [tmtk]((https://pypi.org/project/tmtk/)) and [transmart](https://pypi.org/project/transmart/)
+[Jupyter](https://jupyter.org) notebook server with the [tmtk](https://pypi.org/project/tmtk/) and [transmart](https://pypi.org/project/transmart/)
 packages and `transmart-copy` pre-installed.
 If you run this script without any flag or with `--no-notebook-server`, your setup will run without notebook server.
 

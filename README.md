@@ -313,6 +313,12 @@ Logs can then still be inspected with `docker logs`, but not with `journalctl`.
 The project tasks and [known issues](https://github.com/thehyve/glowing-bear-docker/issues) are managed on the [project board](https://github.com/thehyve/glowing-bear-docker/projects/1).
 
 
+## Acknowledgement
+
+This project was funded by the German Ministry of Education and Research (BMBF) as part of the project
+DIFUTURE - Data Integration for Future Medicine within the German Medical Informatics Initiative (grant no. 01ZZ1804D).
+
+
 ## License
 
 MIT &copy; 2019 The Hyve.

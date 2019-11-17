@@ -29,6 +29,7 @@ Variable                   | Description
 `KEYCLOAK_REALM`           | Keycloak realm, e.g. `transmart`
 `KEYCLOAK_CLIENT_ID`       | Keycloak client id, e.g. `transmart-client`
 `DENY_ACCESS_WITHOUT_ROLE` | Only allow access to users with a role (default: `false`).
+`PATIENT_COUNT_THRESHOLD`  | Threshold below which counts are not available for users with `COUNTS_WITH_THRESHOLD` access permission to a study. 
 
 1. Create a `.env` file:
     ```properties

@@ -38,7 +38,7 @@ Build the image and publish it to [Docker Hub](https://hub.docker.com/r/thehyve/
 
 ```bash
 # Build image
-VERSION="0.0.1"
+VERSION="0.0.2"
 docker build -t "thehyve/glowingbear-ssl-proxy:${VERSION}" . --no-cache
 # Publish image to Docker Hub
 docker login

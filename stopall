@@ -18,13 +18,16 @@ begins_with_short_option()
 }
 
 # THE DEFAULTS INITIALIZATION - OPTIONALS
+_arg_keycloak="on"
 _arg_connector="off"
+_arg_notebook_server="off"
+_arg_letsencrypt="off"
 
 
 print_help()
 {
 	printf '%s\n' "Stop all Glowing Bear and TranSMART components using docker-compose."
-	printf 'Usage: %s [--(no-)connector] [-h|--help]\n' "$0"
+	printf 'Usage: %s [--(no-)keycloak] [--(no-)connector] [--(no-)notebook-server] [--(no-)letsencrypt] [-h|--help]\n' "$0"
 	printf '\t%s\n' "-h, --help: Prints help"
 }
 
@@ -35,9 +38,21 @@ parse_commandline()
 	do
 		_key="$1"
 		case "$_key" in
+			--no-keycloak|--keycloak)
+				_arg_keycloak="on"
+				test "${1:0:5}" = "--no-" && _arg_keycloak="off"
+				;;
 			--no-connector|--connector)
 				_arg_connector="on"
 				test "${1:0:5}" = "--no-" && _arg_connector="off"
+				;;
+			--no-notebook-server|--notebook-server)
+				_arg_notebook_server="on"
+				test "${1:0:5}" = "--no-" && _arg_notebook_server="off"
+				;;
+			--no-letsencrypt|--letsencrypt)
+				_arg_letsencrypt="on"
+				test "${1:0:5}" = "--no-" && _arg_letsencrypt="off"
 				;;
 			-h|--help)
 				print_help
@@ -57,4 +72,9 @@ parse_commandline()
 
 parse_commandline "$@"
 
-docker-compose -f docker-compose.yml -f keycloak.yml -f glowingbear-ssl-proxy.yml $([[ $_arg_connector = "on" ]] && echo '-f connector.yml') down
+docker-compose -f docker-compose.yml \
+  $(([[ $_arg_letsencrypt = "on" ]] && echo '-f letsencrypt.yml') || echo '-f glowingbear-ssl-proxy.yml') \
+  $([[ $_arg_keycloak = "on" ]] && echo '-f keycloak.yml') \
+  $([[ $_arg_connector = "on" ]] && echo '-f connector.yml') \
+  $([[ $_arg_notebook_server = "on" ]] && echo '-f tmtk-notebook-server.yml') \
+  down

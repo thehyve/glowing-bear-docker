@@ -87,7 +87,7 @@ services:
       - ${TRANSMART_DATABASE_PORT:-9432}:5432
     environment:
       POSTGRES_USER: biomart_user
-      POSTGRES_PASSWORD: biomart_user
+      POSTGRES_PASSWORD: ${BIOMART_USER_PASSWORD:-biomart_user}
       POSTGRES_DB: transmart
     volumes:
       - transmart-db-data:/var/lib/postgresql/data
@@ -111,6 +111,7 @@ services:
       PGHOST: transmart-database
       PGPORT: 5432
       PGDATABASE: transmart
+      BIOMART_USER_PASSWORD: ${BIOMART_USER_PASSWORD:-biomart_user}
     depends_on:
       - transmart-database
     networks:

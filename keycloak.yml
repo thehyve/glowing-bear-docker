@@ -44,6 +44,7 @@ services:
       - keycloak-postgres
     networks:
       - keycloak-db-network
+      - keycloak-network
     volumes:
       - ./keycloak/setup-realm.sh:/opt/jboss/startup-scripts/setup-realm.sh
       - ./keycloak/realm-template.json:/tmp/realm-template.json
@@ -59,4 +60,6 @@ volumes:
 
 networks:
   keycloak-db-network:
+    driver: bridge
+  keycloak-network:
     driver: bridge

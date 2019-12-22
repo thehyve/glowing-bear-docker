@@ -16,7 +16,7 @@ cat > /etc/nginx/sites-enabled/glowingbear.conf <<EndOfMessage
      index                 index.html;
 
      location / {
-       proxy_pass            http://172.17.0.1:9080/;
+       proxy_pass            http://glowing-bear:9080/;
        proxy_read_timeout    90s;
        proxy_connect_timeout 90s;
        proxy_send_timeout    90s;
@@ -48,7 +48,7 @@ cat > /etc/nginx/sites-enabled/keycloak.conf <<EndOfMessage
      index                 index.html;
 
      location / {
-       proxy_pass            http://172.17.0.1:8080/;
+       proxy_pass            http://keycloak:8080/;
        proxy_read_timeout    90s;
        proxy_connect_timeout 90s;
        proxy_send_timeout    90s;

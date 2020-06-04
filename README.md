@@ -29,6 +29,7 @@ Variable                   | Description
 `KEYCLOAK_REALM`           | Keycloak realm, e.g. `transmart`
 `KEYCLOAK_CLIENT_ID`       | Keycloak client id, e.g. `transmart-client`
 `DENY_ACCESS_WITHOUT_ROLE` | Only allow access to users with a role (default: `false`).
+`AUTOSAVE_SUBJECT_SETS`    | Persist subject selection as subject set automatically. Use this for large data sets. (default: `false`).
 
 1. Create a `.env` file:
     ```properties

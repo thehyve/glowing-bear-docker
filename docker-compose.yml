@@ -5,7 +5,7 @@ services:
   # ----- glowing-bear -----
   glowing-bear:
     container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-glowing-bear
-    image: thehyve/glowing-bear:2.0.8
+    image: thehyve/glowing-bear:2.0.10
     ports:
       - ${GLOWING_BEAR_PORT:-9080}:9080
     environment:
@@ -19,6 +19,7 @@ services:
       NGINX_HOST: localhost
       NGINX_PORT: 9080
       CHECK_SERVER_STATUS: 'true'
+      AUTOSAVE_SUBJECT_SETS: ${AUTOSAVE_SUBJECT_SETS:-false}
     depends_on:
       - gb-backend
       - transmart-api-server

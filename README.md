@@ -13,6 +13,9 @@ It is preferred to have a Keycloak instance at organisation level,
 instead of installing it on the same machine as Glowing Bear, but we also provide
 [instructions on how to set up Keycloak](#setting-up-keycloak) on a single machine together with Glowing Bear.
 
+![Component diagram](Components.png)
+
+
 Please ensure that you have a recent version of Docker (>= `18`).
 If you do not have `docker-compose` installed,
 follow the instructions to [install docker-compose](https://docs.docker.com/compose/install/).
@@ -50,7 +53,7 @@ This starts:
  - [transmart-packer](https://github.com/thehyve/transmart-packer).
 
 
-Glowing Bear and the the APIs of other services can be reached using the following urls:
+Glowing Bear and the APIs of other services can be reached using the following urls:
 
 Application                | URL
 :------------------------- |:--------------------------
@@ -91,9 +94,10 @@ Variable            | Description
 
 ### Configure a realm
 
-To configure Keycloak for use with Glowing Bear and TranSMART, import the
-[example realm configuration](keycloak/transmart-realm.json) into Keycloak. 
-More information about how to set up Keycloak, see the
+Keycloak is configured for use with Glowing Bear and TranSMART at first startup, using the
+[realm configuration template](keycloak/realm-template.json). To disable this,
+comment out the `KEYCLOAK_IMPORT` line in [keycloak.yml](keycloak.yml). 
+For more information about how to set up Keycloak, see the
  [TranSMART API server documentation](https://github.com/thehyve/transmart-core/tree/dev/transmart-api-server)
 
 

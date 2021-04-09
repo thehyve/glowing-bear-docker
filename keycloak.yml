@@ -23,6 +23,7 @@ services:
     image: jboss/keycloak:12.0.4
     container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-keycloak
     environment:
+      JAVA_OPTS_APPEND: '-Dkeycloak.profile.feature.token_exchange=enabled -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled'
       DB_VENDOR: POSTGRES
       DB_ADDR: keycloak-postgres
       DB_DATABASE: keycloak

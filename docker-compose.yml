@@ -157,6 +157,7 @@ services:
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL:?Please configure KEYCLOAK_SERVER_URL}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM:?Please configure KEYCLOAK_REALM}
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID:?Please configure KEYCLOAK_CLIENT_ID}
+      KEYCLOAK_OFFLINE_TOKEN: ${KEYCLOAK_OFFLINE_TOKEN:?Please configure KEYCLOAK_OFFLINE_TOKEN}
       CLIENT_ORIGIN_URL: '*'
     networks:
       - nginx-proxy-network
@@ -182,6 +183,10 @@ services:
       - redis
     environment:
       TRANSMART_URL: http://transmart-api-server:8081
+      KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL:?Please configure KEYCLOAK_SERVER_URL}
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM:?Please configure KEYCLOAK_REALM}
+      KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID:?Please configure KEYCLOAK_CLIENT_ID}
+      KEYCLOAK_OFFLINE_TOKEN: ${KEYCLOAK_OFFLINE_TOKEN:?Please configure KEYCLOAK_OFFLINE_TOKEN}
     networks:
       - nginx-proxy-network
       - packer-redis-network

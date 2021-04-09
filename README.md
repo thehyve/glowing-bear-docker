@@ -13,7 +13,7 @@ It is preferred to have a Keycloak instance at organisation level,
 instead of installing it on the same machine as Glowing Bear, but we also provide
 [instructions on how to set up Keycloak](#setting-up-keycloak) on a single machine together with Glowing Bear.
 
-![Component diagram](Components.png)
+![Component diagram](images/Components.png)
 
 
 Please ensure that you have a recent version of Docker (>= `18`).
@@ -31,17 +31,21 @@ Variable                   | Description
 `KEYCLOAK_SERVER_URL`      | URL of the Keycloak server e.g. `https://keycloak.example.com`
 `KEYCLOAK_REALM`           | Keycloak realm, e.g. `transmart`
 `KEYCLOAK_CLIENT_ID`       | Keycloak client id, e.g. `transmart-client`
+`KEYCLOAK_OFFLINE_TOKEN` | Offline token of a system user with impersonation role, used by Packer to query data for exports.
 `DENY_ACCESS_WITHOUT_ROLE` | Only allow access to users with a role (default: `false`).
 `AUTOSAVE_SUBJECT_SETS`    | Persist subject selection as subject set automatically. Use this for large data sets. (default: `false`).
 
-1. Create a `.env` file:
+1. Create a system user and assign the `impersonation` role on the `realm-managament` client:
+   ![Assign impersonation role](images/Screenshot%20assign%20impersonation%20role.png)
+2. Create a `.env` file:
     ```properties
     INSTANCE_ID=DWH1
     KEYCLOAK_SERVER_URL=https://keycloak.example.com
     KEYCLOAK_REALM=transmart
     KEYCLOAK_CLIENT_ID=transmart-client
+    KEYCLOAK_OFFLINE_TOKEN=offline token of system user with impersonation role
     ```
-2. Run:
+3. Run:
     ```bash
     docker-compose up -d
     ```
@@ -208,7 +212,8 @@ The services can be stopped with `./stopall`.
     KEYCLOAK_SERVER_URL=https://keycloak.example.com
     KEYCLOAK_REALM=transmart
     KEYCLOAK_CLIENT_ID=transmart-client
-    
+    KEYCLOAK_OFFLINE_TOKEN=offline token of system user with impersonation role
+
     GLOWINGBEAR_HOSTNAME=glowingbear.example.com
     KEYCLOAK_HOSTNAME=keycloak.example.com
     

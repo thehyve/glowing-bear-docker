@@ -28,7 +28,7 @@ The environment variables for the docker-compose script are defined in the `.env
 Variable                   | Description
 :------------------------- |:---------------
 `INSTANCE_ID`              | A unique instance identifier, e.g., `DWH1`
-`KEYCLOAK_SERVER_URL`      | URL of the Keycloak server e.g. `https://keycloak.example.com`
+`KEYCLOAK_SERVER_URL`      | URL of the Keycloak server e.g. `https://keycloak.example.com/auth`
 `KEYCLOAK_REALM`           | Keycloak realm, e.g. `transmart`
 `KEYCLOAK_CLIENT_ID`       | Keycloak client id, e.g. `transmart-client`
 `KEYCLOAK_OFFLINE_TOKEN` | Offline token of a system user with impersonation role, used by Packer to query data for exports.
@@ -209,7 +209,7 @@ The services can be stopped with `./stopall`.
     ```properties
     INSTANCE_ID=DWH1
 
-    KEYCLOAK_SERVER_URL=https://keycloak.example.com
+    KEYCLOAK_SERVER_URL=https://keycloak.example.com/auth
     KEYCLOAK_REALM=transmart
     KEYCLOAK_CLIENT_ID=transmart-client
     KEYCLOAK_OFFLINE_TOKEN=offline token of system user with impersonation role
@@ -265,7 +265,7 @@ required:
     ```
 3. Set these local aliases as host names in the `.env` file:
     ```properties
-    KEYCLOAK_SERVER_URL=https://keycloak
+    KEYCLOAK_SERVER_URL=https://keycloak/auth
     GLOWINGBEAR_HOSTNAME=glowingbear
     KEYCLOAK_HOSTNAME=keycloak
     ```

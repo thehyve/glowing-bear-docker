@@ -5,7 +5,7 @@ services:
   # ----- glowing-bear -----
   glowing-bear:
     container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-glowing-bear
-    image: thehyve/glowing-bear:2.0.13
+    image: thehyve/glowing-bear:2.0.14
     ports:
       - ${GLOWING_BEAR_PORT:-9080}:9080
     environment:
@@ -54,7 +54,7 @@ services:
 
   gb-backend:
     container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-gb-backend
-    image: thehyve/glowing-bear-backend:1.0.5
+    image: thehyve/glowing-bear-backend:1.0.6
     environment:
       TRANSMART_API_SERVER_URL: http://transmart-api-server:8081
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL:?Please configure KEYCLOAK_SERVER_URL}
@@ -103,7 +103,7 @@ services:
 
   transmart-api-server:
     container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-transmart-api-server
-    image: thehyve/transmart-api-server:17.2.8
+    image: thehyve/transmart-api-server:17.2.9
     environment:
       KEYCLOAK_SERVER_URL: ${KEYCLOAK_SERVER_URL:?Please configure KEYCLOAK_SERVER_URL}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM:?Please configure KEYCLOAK_REALM}
@@ -145,7 +145,7 @@ services:
 
   transmart-packer:
     container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-transmart-packer
-    image: thehyve/transmart-packer:0.4.3
+    image: thehyve/transmart-packer:0.5.0
     command: ['transmart-packer']
     depends_on:
       - redis
@@ -174,7 +174,7 @@ services:
 
   transmart-packer-worker:
     container_name: ${INSTANCE_ID:?Please configure INSTANCE_ID}-transmart-packer-worker
-    image: thehyve/transmart-packer:0.4.3
+    image: thehyve/transmart-packer:0.5.0
     command:  ['celery', '-A', 'packer.tasks', 'worker', '-c', '4', '--loglevel', 'info']
     depends_on:
       - redis

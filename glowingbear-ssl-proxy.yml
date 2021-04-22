@@ -10,6 +10,9 @@ services:
     volumes:
       - ./ssl/server.pem:/etc/nginx/server.pem
       - ./ssl/server.key:/etc/nginx/server.key
+    networks:
+      - keycloak-network
+      - nginx-proxy-network
     ports:
       - 80:80
       - 443:443
